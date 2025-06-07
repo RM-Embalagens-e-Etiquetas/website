@@ -54,12 +54,19 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
+    background: @body-color; /* Alterado para a cor do corpo */
     opacity: 0;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: @main-color;
+    border-radius: @min-margin; /* Adicionado arredondamento */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: @main-color-light; /* Adicionado estado hover */
 }
 
 
@@ -128,6 +135,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column; /* Adicionado para empilhar itens verticalmente por padrão */
 
     .item {
         display: flex;
@@ -142,6 +150,7 @@ img {
             padding-bottom: @small-margin;
             flex-direction: column;
             text-align: center;
+            align-items: center; /* Centralizar itens do header */
         }
     }
 }
@@ -156,10 +165,13 @@ header {
         justify-content: space-between !important;
         padding: @medium-margin @large-margin  !important;
         max-width: none !important;
+        width: 100%; /* Garantir que o header ocupe toda a largura */
 
         // === Menu
         .nav-bar {
             transition: all .5s ease;
+            display: flex; /* Adicionado para alinhar nav */
+            align-items: center; /* Adicionado para alinhar nav */
 
             .minimize {
                 cursor: pointer;
@@ -168,30 +180,57 @@ header {
                 margin: @large-margin;
                 font-size: @huge-font-size;
                 color: @subtitle-color;
+                display: none; /* Esconder por padrão, mostrar em mobile.less */
             }
 
             nav {
                 display: flex;
                 justify-content: space-evenly;
+                align-items: center; /* Alinhar itens da navegação verticalmente */
 
                 .nav-item {
                     color: @title-color-light;
                     margin: 0 @medium-margin;
                     padding: @small-margin 0;
                     width: max-content;
+                    font-weight: @font-medium; /* Adicionado peso de fonte */
+                    position: relative; /* Para pseudo-elemento ::after */
+                    text-decoration: none; /* Remover sublinhado padrão */
 
                     i {
                         margin-right: @small-margin;
                     }
 
+                    &::after { /* Adicionar linha animada abaixo do item */
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 3px;
+                        display: block;
+                        margin-top: 5px;
+                        right: 0;
+                        background: @main-color;
+                        transition: width .3s ease;
+                        -webkit-transition: width .3s ease;
+                    }
+
                     &.active {
-                        color: #060714;
-                        border-bottom: 4px inset @dark-color;
-                        .bold()
+                        color: @dark-color;
+                        font-weight: @font-bold; /* Usar variável de peso de fonte */
+                        &::after { /* Mostrar linha para item ativo */
+                            width: 100%;
+                            left: 0;
+                            background-color: @dark-color;
+                        }
                     }
 
                     &:hover {
-                        border-bottom: 4px inset @subtitle-color;
+                        color: @main-color; /* Mudar cor no hover */
+                        &::after { /* Expandir linha no hover */
+                            width: 100%;
+                            left: 0;
+                            background-color: @main-color;
+                        }
                     }
                 }
             }
@@ -223,4 +262,70 @@ header {
     color: @subtitle-color;
     font-size: @h2-font-size;
     font-weight: @font-medium;
+}
+
+// === Footer ===
+footer {
+    background-color: @footer-bg;
+    color: @subtitle-color-light;
+    padding: @large-margin @max-margin;
+    width: 100%;
+
+    .item {
+        align-items: flex-start; // Alinhar itens ao topo
+        padding-bottom: @medium-margin;
+        padding-top: @medium-margin;
+    }
+
+    h4 {
+        color: white;
+        font-size: @big-font-size;
+        margin-bottom: @medium-margin;
+        font-weight: @font-medium;
+    }
+
+    p, a {
+        color: @subtitle-color;
+        font-size: @normal-font-size;
+        margin-bottom: @small-margin;
+        text-decoration: none;
+        font-weight: @font-regular;
+    }
+
+    a {
+        display: block; // Para que cada link ocupe uma linha
+        &:hover {
+            color: @main-color;
+        }
+    }
+
+    .footer-column {
+        display: flex;
+        flex-direction: column;
+        margin: 0 @medium-margin; // Espaçamento entre colunas
+    }
+
+    .logo-footer {
+        max-width: 120px; // Ajustar tamanho do logo no footer
+        margin-bottom: @medium-margin;
+    }
+
+    .social-icons {
+        margin-top: @medium-margin;
+        a {
+            margin-right: @small-margin;
+            font-size: @big-font-size; // Ícones maiores
+            display: inline-block; // Para ficarem na mesma linha
+        }
+    }
+
+    .copyright {
+        text-align: center;
+        width: 100%;
+        padding-top: @large-margin;
+        margin-top: @large-margin;
+        border-top: 1px solid @title-color-light;
+        font-size: @normal-font-size;
+        color: @subtitle-color;
+    }
 }

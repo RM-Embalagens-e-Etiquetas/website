@@ -1,0 +1,452 @@
+@import url(../global.less);
+@import url(../home/main.less);
+
+// Tablet
+@media screen and (max-width:1024px) {
+    .main-container {
+        padding: @medium-margin @medium-margin; /* Ajustar padding lateral */
+
+        .item {
+            padding: @medium-margin 0;
+            padding-top: @small-margin ;
+
+            &.header {
+                padding-bottom: @small-margin  !important;
+            }
+        }
+    }
+
+    main {
+        #carousel {
+            display: none;
+        }
+        .item .header { /* Ajustes no header do banner principal */
+            align-items: center;
+            text-align: center;
+            h1, span {
+                width: 100%;
+            }
+        }
+        .item .button {
+            align-items: center;
+        }
+    }
+
+    #produtos {
+        .catalog {
+            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Manter responsivo */
+            // grid-template-columns: repeat(2, 1fr); // Pode ser muito restritivo
+            justify-items: center;
+            gap: @medium-margin; /* Ajustar gap */
+
+            .product {
+                @altura: 200px; // Manter altura
+                // @largura: 200px; // Largura será definida pelo grid
+
+                max-width: none;
+                width: 100%;
+                // flex-direction: row-reverse; // Remover, manter padrão de coluna
+
+                img {
+                    // min-width: 0 !important; // Remover
+                    height: @altura; // Definir altura da imagem
+                    // width: calc(@largura * 3/4); // Remover, largura 100%
+                    width: 100%;
+                    object-fit: cover;
+                }
+
+                .mask {
+                    // background: none; // Manter fundo para contraste
+                    // backdrop-filter: none; // Manter blur
+                    width: 100%; // Ocupar toda a largura
+                    padding-right: @medium-margin; // Ajustar padding
+                    height: 100%; // Ocupar toda a altura
+                    // position: relative; // Manter absolute
+                    opacity: 0; // Manter invisível por padrão
+                    // border: none; // Remover, usar o hover do product
+
+                    .main-title {
+                        color: white; // Manter cor branca
+                        // width: @largura; // Remover, largura 100%
+                        width: 100%;
+                        font-size: @big-font-size; // Ajustar tamanho da fonte se necessário
+                    }
+
+                    .order {
+                        // border: 2px solid @main-color; // Manter estilo padrão
+                        // background-color: @body-color; // Manter estilo padrão
+                        // color: @main-color; // Manter estilo padrão
+                        margin: @small-margin 0;
+
+                        // &:hover { // Hover já definido no main.less
+                        //     color: white;
+                        //     background-color: @main-color;
+                        //     border: 2px solid transparent;
+                        //     transform: @pop-translation;
+                        //     box-shadow: @sombra-padrao;
+                        // }
+                    }
+
+                    // &:hover { // Hover já definido no main.less
+                    //     border: none;
+                    // }
+                }
+
+                &:hover {
+                    // transform: none; // Manter transform do main.less
+
+                    .mask {
+                        opacity: 1; // Mostrar máscara no hover
+                        // border: none; // Manter borda do main.less se houver
+                        // box-shadow: none; // Manter sombra do main.less se houver
+                    }
+                }
+            }
+        }
+    }
+
+    #sobre {
+        .content {
+            flex-direction: column;
+            align-items: center; /* Centralizar conteúdo */
+            text-align: center; /* Centralizar texto */
+            .about {
+                align-items: center; /* Centralizar itens do about */
+                .info {
+                    text-align: center; /* Centralizar texto da info */
+                    .main-title {
+                        text-align: center;
+                    }
+                    .info-text {
+                        text-align: center; /* Justificar pode ser ruim em telas menores */
+                    }
+                }
+            }
+        }
+
+        .about {
+            margin: @large-margin 0;
+        }
+    }
+
+    #contato {
+        .contact {
+            flex-direction: column;
+            align-items: center; /* Centralizar itens */
+
+            iframe {
+                max-width: 100%; /* Ocupar largura total */
+                // max-height: 300px; // Altura pode ser flexível
+            }
+
+            .contact-text {
+                margin: @medium-margin 0 !important;
+                width: 100%; /* Ocupar largura total */
+                max-width: 500px; /* Limitar largura máxima */
+                align-items: center; /* Centralizar */
+                .main-title, .sub-title {
+                    text-align: center;
+                }
+                .contacts {
+                    align-items: center; /* Centralizar mídias de contato */
+                    .contact-media {
+                        flex-direction: column; /* Empilhar em telas menores */
+                        text-align: center;
+                        .content {
+                            margin-bottom: @small-margin;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    footer .main-container {
+        flex-direction: column; /* Empilhar itens do rodapé */
+        text-align: center;
+        ul {
+            align-items: center; /* Centralizar itens da lista */
+        }
+    }
+}
+
+// Smartphone
+@media screen and (max-width:768px) {
+    .mobile {
+        display: flex !important;
+    }
+    header .nav-bar .minimize { /* Mostrar botão de minimizar no mobile */
+        display: flex !important;
+    }
+
+    .main-title {
+        font-size: @huge-font-size;
+    }
+
+    .logo {
+        max-width: 70px; /* Aumentar um pouco o logo */
+    }
+
+    header {
+        padding: @small-margin @medium-margin  !important; /* Ajustar padding */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%; /* Garantir largura total */
+        z-index: 999; /* Aumentar z-index */
+        backdrop-filter: blur(10px);
+        background: fade(@body-color, 85%); /* Usar cor do body com transparência */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sombra mais sutil */
+
+        .item {
+            padding: @small-margin 0 !important;
+        }
+
+        .nav-bar {
+            align-items: center; /* Centralizar itens verticalmente */
+            justify-content: center;
+            // display: inherit; // Remover, já é flex
+            flex-direction: column;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: -100%; /* Começar fora da tela para animação */
+            z-index: 99; // Abaixo do header
+            background: @body-color; // Fundo sólido para o menu
+            // background: inherit; // Remover
+
+
+            .minimize {
+                display: flex !important;
+                position: absolute; /* Posicionar corretamente */
+                top: @medium-margin;
+                right: @medium-margin;
+                font-size: @huge-font-size + 0.2rem; /* Aumentar um pouco */
+            }
+
+            nav {
+                flex-direction: column; /* Itens em coluna */
+                align-items: center;
+                width: 100%; /* Ocupar toda a largura */
+
+                .nav-item {
+                    padding: @medium-margin 0 !important; /* Aumentar padding vertical */
+                    margin: @small-margin 0 !important; /* Adicionar margem vertical */
+                    width: 80% !important; /* Definir largura */
+                    display: flex; /* Usar flex para alinhar ícone e texto */
+                    align-items: center;
+                    justify-content: center;
+                    font-size: @big-font-size;
+                    text-align: center; /* Centralizar texto */
+                    border-bottom: none !important; /* Remover borda inferior padrão */
+
+                    &::after { /* Remover linha animada no mobile */
+                        display: none;
+                    }
+
+                    &.active {
+                        // border-bottom: none !important; // Já coberto acima
+                        color: @main-color !important; /* Destacar ativo */
+                        background-color: @subtitle-color-light; /* Fundo para ativo */
+                        border-radius: @arredondado; /* Arredondar ativo */
+                    }
+
+                    &:hover {
+                        // border: none !important; // Já coberto acima
+                        color: @main-color  !important;
+                        background-color: @subtitle-color-light;
+                        border-radius: @arredondado; /* Arredondar no hover */
+                    }
+
+                    &:focus {
+                        color: @main-color  !important;
+                        background-color: @subtitle-color-light; /* Estilo de foco */
+                        border-radius: @arredondado;
+                    }
+                }
+            }
+
+            &.open {
+                left: 0; /* Mostrar menu */
+            }
+        }
+    }
+
+    main {
+        margin-top: 80px; /* Ajustar margem para o header fixo */
+
+        .item {
+            .header {
+                align-items: center;
+                text-align: center; /* Centralizar texto */
+
+                h2 {
+                    font-size: 1em;
+                    width: fit-content;
+                }
+
+                h1,
+                span.main-color {
+                    width: 100%; /* Ocupar toda a largura */
+                    max-width: 300px; /* Limitar largura máxima */
+                    line-height: 1.3; /* Ajustar altura da linha */
+                    font-size: 2rem;
+                }
+            }
+
+            .button {
+                align-items: center; /* Centralizar botão */
+                .main-button {
+                    font-size: @h2-font-size; /* Reduzir um pouco o botão */
+                    padding: @small-margin @medium-margin;
+                }
+            }
+        }
+    }
+
+    #produtos {
+        .catalog {
+            display: grid; /* Usar grid para melhor controle */
+            grid-template-columns: 1fr; /* Uma coluna */
+            // display: flex; // Remover
+            // flex-direction: column; // Remover
+            // grid-template-columns: none; // Remover
+            gap: @large-margin; /* Aumentar gap */
+
+            .product {
+                // @altura: 160px !important; // Altura pode ser automática ou maior
+                // @largura: 140px !important; // Largura 100%
+
+                max-width: none;
+                width: 100%;
+
+                img {
+                    // max-height: @altura; // Remover, altura definida no product
+                    // max-width: @largura; // Remover, largura 100%
+                    height: 200px; /* Definir altura fixa para consistência */
+                }
+
+                .mask {
+                    height: 100%; /* Ocupar toda a altura */
+                    justify-content: center; /* Centralizar conteúdo */
+
+                    .order {
+                        padding: @small-margin @medium-margin  !important; /* Ajustar padding */
+                        font-size: @normal-font-size; /* Reduzir fonte do botão */
+                    }
+                }
+            }
+        }
+
+        .more {
+            font-size: @big-font-size;
+        }
+    }
+
+    #sobre {
+        .content {
+            flex-direction: column;
+            align-items: center; /* Centralizar */
+
+            #sobre-img {
+                max-height: 200px;
+                width: min(300px, 100%);
+                margin-bottom: @medium-margin; /* Adicionar margem abaixo da imagem */
+            }
+        }
+
+        .about {
+            margin: @medium-margin 0; /* Ajustar margem */
+            width: 100%; /* Ocupar toda a largura */
+            align-items: center; /* Centralizar */
+
+            .info {
+                max-width: 90% !important; /* Usar porcentagem para melhor adaptação */
+                text-align: center; /* Centralizar texto */
+
+                .title { // .main-title dentro de .info
+                    text-align: center;
+                }
+                .info-text {
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    #contato {
+        .contact {
+            flex-direction: column;
+            border-radius: @arredondado;
+            box-shadow: @sombra-padrao;
+            border: 2px solid @main-color;
+            padding: @medium-margin !important; /* Adicionar padding interno */
+            width: 100%; /* Ocupar toda a largura */
+            max-width: 90vw; /* Limitar largura máxima */
+            margin: 0 auto; /* Centralizar */
+
+
+            iframe {
+                display: none;
+            }
+
+            .contact-text {
+                margin: 0 !important; /* Remover margem, já tem no .contact */
+                width: 100%; /* Ocupar toda a largura */
+
+                .contacts {
+                    .contact-media {
+                        align-items: center;
+                        flex-direction: column;
+                        margin: @medium-margin 0;
+                        width: 100%; /* Ocupar toda a largura */
+
+                        .content {
+                            justify-content: center; /* Centralizar conteúdo */
+                            width: fit-content;
+                            margin-bottom: @small-margin; /* Adicionar margem abaixo do texto */
+
+                            i {
+                                margin-right: @small-margin;
+                            }
+                        }
+
+                        .contact-button {
+                            width: min(200px, 80%); /* Ajustar largura do botão */
+                            margin-top: @small-margin;
+                            color: white;
+                            background-color: @main-color;
+                            border: 2px solid transparent;
+
+                            &:hover {
+                                color: @main-color;
+                                background-color: @body-color;
+                                border: 2px solid @main-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        .main-container {
+            flex-direction: column-reverse; /* Manter ordem original */
+            gap: @large-margin; /* Adicionar gap */
+            ul {
+                align-items: center; /* Centralizar itens da lista */
+                padding: 0; /* Remover padding da lista */
+            }
+        }
+
+        .desc {
+            display: none;
+        }
+        span { /* Copyright */
+            padding-left: @small-margin;
+            padding-right: @small-margin;
+        }
+    }
+}
