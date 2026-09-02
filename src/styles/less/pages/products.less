@@ -1,0 +1,238 @@
+// ============================================================
+// Product group sections (catalog page)
+// ============================================================
+.product-group {
+  &:nth-child(even) {
+    background: @color-surface;
+  }
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: @space-md;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: @radius-md;
+  overflow: hidden;
+  border: 1px solid @color-line;
+  background: @color-paper;
+  transition: @transition-base;
+
+  &__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: @color-onyx;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+  }
+
+  &__body {
+    padding: @space-md;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      margin-bottom: @space-xs;
+      font-size: 1.02rem;
+    }
+
+    p {
+      font-size: 0.86rem;
+      flex: 1;
+    }
+  }
+
+  &__count {
+    margin-top: @space-sm;
+    font-size: 0.72rem;
+    font-weight: @font-semi-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: @color-silver-text;
+  }
+
+  &:hover {
+    border-color: @color-line-strong;
+    box-shadow: @shadow-md;
+    transform: translateY(-3px);
+
+    .category-card__media img {
+      transform: scale(1.06);
+    }
+  }
+}
+
+// ============================================================
+// Category detail page — gallery
+// ============================================================
+.product-gallery-section {
+  background: @color-surface;
+}
+
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: @space-sm;
+}
+
+.product-gallery__item {
+  aspect-ratio: 1;
+  border-radius: @radius-sm;
+  overflow: hidden;
+  background: @color-onyx;
+  padding: 0;
+  border: 1px solid @color-line;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.08);
+  }
+}
+
+// ============================================================
+// Lightbox
+// ============================================================
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(6, 6, 7, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: @space-lg;
+
+  &__image {
+    max-width: 90vw;
+    max-height: 84vh;
+    object-fit: contain;
+    border-radius: @radius-sm;
+    box-shadow: @shadow-lg;
+  }
+
+  &__close {
+    position: absolute;
+    top: @space-md;
+    right: @space-md;
+    color: @color-on-dark;
+    font-size: 1.3rem;
+    opacity: 0.75;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: @color-on-dark;
+    font-size: 1.5rem;
+    opacity: 0.65;
+    padding: @space-sm;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &--prev {
+      left: @space-sm;
+    }
+    &--next {
+      right: @space-sm;
+    }
+  }
+
+  &__counter {
+    position: absolute;
+    bottom: @space-md;
+    left: 50%;
+    transform: translateX(-50%);
+    color: @color-on-dark-muted;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+// ============================================================
+// Related categories (mini cards)
+// ============================================================
+.related-categories__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: @space-sm;
+}
+
+.mini-card {
+  text-align: center;
+
+  &__media {
+    aspect-ratio: 1;
+    border-radius: @radius-md;
+    overflow: hidden;
+    background: @color-onyx;
+    margin-bottom: @space-xs;
+    border: 1px solid @color-line;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+  }
+
+  span {
+    font-size: 0.84rem;
+    font-weight: @font-medium;
+    color: @color-ink-soft;
+  }
+
+  &:hover .mini-card__media img {
+    transform: scale(1.06);
+  }
+}
+
+// ============================================================
+// Responsive
+// ============================================================
+@media screen and (max-width: @bp-lg) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: @bp-sm) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lightbox__nav {
+    font-size: 1.2rem;
+  }
+}

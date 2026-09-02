@@ -1,0 +1,86 @@
+// ============================================================
+// About page
+// ============================================================
+.about-section {
+  background: @color-surface;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: @space-2xl;
+    align-items: start;
+  }
+
+  &__img {
+    border: 1px solid @color-line;
+    border-radius: @radius-lg;
+    box-shadow: @shadow-md;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    width: 100%;
+    position: sticky;
+    top: 100px;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  &__content {
+    h2 {
+      margin-top: @space-lg;
+      font-size: 1.4rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    p {
+      margin-top: @space-xs;
+    }
+
+    a {
+      color: @color-ink;
+      text-decoration: underline;
+      text-decoration-color: @color-line-strong;
+    }
+  }
+}
+
+.values-section {
+  background: @color-surface-alt;
+  border-top: 1px solid @color-line;
+  border-bottom: 1px solid @color-line;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: @space-md;
+}
+
+.value-card {
+  padding: @space-lg @space-md;
+  border-radius: @radius-md;
+  background: @color-surface;
+  border: 1px solid @color-line;
+
+  h3 {
+    color: @color-ink;
+    margin-bottom: @space-xs;
+    font-size: 1.05rem;
+  }
+}
+
+@media screen and (max-width: @bp-lg) {
+  .about-section__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-section__img {
+    position: static;
+    aspect-ratio: 16 / 9;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}

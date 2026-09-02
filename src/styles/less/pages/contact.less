@@ -1,0 +1,96 @@
+// ============================================================
+// Contact page
+// ============================================================
+.contact-section {
+  background: @color-surface;
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: @space-lg;
+    align-items: center;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: @space-md;
+  }
+
+  iframe {
+    width: 100%;
+    border: 1px solid @color-line;
+    border-radius: @radius-md;
+    box-shadow: @shadow-sm;
+    filter: grayscale(100%) contrast(1.05);
+  }
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+  gap: @space-sm;
+
+  i {
+    font-size: 1.3rem;
+    color: @color-ink;
+    margin-top: 2px;
+  }
+
+  h3 {
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+  }
+
+  a:hover {
+    color: @color-silver-text;
+  }
+}
+
+.how-to-order {
+  background: @color-surface-alt;
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: @color-line;
+    border: 1px solid @color-line;
+    counter-reset: step;
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: @space-lg;
+  }
+}
+
+.step-card {
+  padding: @space-lg @space-md;
+  background: @color-surface;
+
+  &__number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: @font-bold;
+    color: @color-line-strong;
+    margin-bottom: @space-sm;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    margin-bottom: @space-xs;
+    font-size: 1.05rem;
+  }
+}
+
+@media screen and (max-width: @bp-lg) {
+  .contact-section__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .how-to-order .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,615 +1,466 @@
-@import url(../global.less);
+// ============================================================
+// Hero — cinematic, dark canvas with full-bleed product photo
+// ============================================================
+.hero {
+  position: relative;
+  background: @color-onyx;
+  overflow: hidden;
 
-// Banner Principal
-main {
-    .item {
-        .header {
-            padding: 0;
-            align-items: flex-start;
-            text-align: left; /* Alinhar texto à esquerda */
+  &__media {
+    position: relative;
+    width: 100%;
+    height: 300px;
 
-            h2 {
-                margin-bottom: 0;
-            }
-
-            h1,
-            span {
-                width: auto; /* Ajustar largura automaticamente */
-                max-width: 450px; /* Definir largura máxima */
-                line-height: 1.2; /* Ajustar altura da linha */
-                font-weight: bolder;
-            }
-        }
-
-        .button {
-            height: auto; /* Altura automática */
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            margin-top: @medium-margin; /* Adicionar margem superior */
-
-            .main-button {
-                display: inline-flex; /* Mudar para inline-flex para melhor alinhamento */
-                flex-direction: inherit;
-                align-items: inherit;
-                justify-content: center;
-                align-items: center;
-                padding: @min-margin @small-margin;
-                border-radius: @arredondado;
-                font-size: @big-font-size;
-                font-weight: bolder;
-                color: white;
-                background-color: @main-color;
-                border: 2px solid transparent;
-                box-shadow: 0 4px 15px 0 rgba(177, 133, 48, 0.75); /* Adicionar sombra */
-
-                &:hover {
-                    color: @main-color;
-                    background: @body-color;
-                    border: 2px solid @main-color;
-                    box-shadow: @sombra-padrao;
-                    transform: @pop-translation;
-                }
-            }
-        }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 55% 38%;
+      filter: grayscale(1) contrast(1.1) brightness(0.9);
     }
 
-    #carousel {
-
-        .main-img {
-            width: 500px;
-            height: 350px; /* Aumentar altura */
-            position: relative;
-            overflow: hidden;
-            border-radius: @arredondado;
-            box-shadow: @sombra-padrao;
-
-            #carousel-images {
-                transition: transform 1s ease-in-out !important; /* Mudar para transform e timing function */
-                width: inherit;
-                height: inherit;
-                display: flex;
-                align-items: center;
-
-                img {
-                    max-width: 100%;
-                    min-width: 100%; /* Garantir que a imagem ocupe todo o espaço */
-                    height: 100%;    /* Garantir que a imagem ocupe todo o espaço */
-                    object-fit: cover; /* Cobrir o espaço sem distorcer */
-                }
-            }
-
-            .customs {
-                background: fade(@body-color, 90%); /* Adicionar transparência */
-                padding: @min-margin 0;
-                width: 400px;
-                position: absolute;
-                top: @medium-margin;
-                left: calc(-@large-margin*4);
-                transform: rotate(-35deg);
-                box-shadow: @sombra-projetada;
-                z-index: 2;
-                text-align: center; /* Centralizar texto */
-
-                .main-color {
-                    border-color: fade(@subtitle-color-light, 50%); /* Suavizar borda */
-                    border-width: 2px 0 2px 0;
-                    border-style: solid;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    background: transparent; /* Remover fundo */
-                    padding: 3px;
-                    font-weight: bolder;
-
-                    label {
-                        font-size: @big-font-size;
-                        margin: 0;
-                        line-height: normal;
-                        color: @dark-color; /* Escurecer texto para melhor contraste */
-                    }
-                }
-            }
-
-            #carousel-buttons {
-                position: absolute;
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                bottom: @small-margin; /* Ajustar posição */
-                z-index: 1;
-
-                .carousel-button {
-                    cursor: pointer;
-                    @raio: 8px; /* Aumentar raio */
-                    width: @raio; /* Tornar círculo */
-                    height: @raio;
-                    border-radius: 50%; /* Tornar círculo */
-                    margin: 0 @min-margin; /* Ajustar margem */
-                    background-color: fade(#555555, 50%);
-                    box-shadow: none; /* Remover sombra individual, já tem no container */
-                    border: 1px solid fade(@dark-color, 20%); /* Adicionar borda sutil */
-                    transition: background-color .3s ease; /* Adicionar transição */
-
-                    &.active {
-                        background-color: @main-color;
-                        border-color: @main-color-light; /* Destacar borda do ativo */
-
-                        &:hover {
-                            background-color: @main-color-light;
-                        }
-                    }
-
-                    &:hover {
-                        background-color: @body-color; /* Mudar cor no hover */
-                    }
-                }
-            }
-        }
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13, 13, 14, 0.15) 0%, @color-onyx 96%);
     }
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 2;
+    max-width: @container-width;
+    margin: 0 auto;
+    padding: @space-xl @space-md @space-2xl;
+  }
+
+  &__content {
+    max-width: 620px;
+  }
+
+  h1 {
+    color: @color-on-dark;
+
+    .accent {
+      position: relative;
+      z-index: 0;
+      white-space: nowrap;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: -0.05em;
+        right: -0.05em;
+        bottom: 0.06em;
+        height: 0.34em;
+        background: rgba(245, 245, 246, 0.18);
+        z-index: -1;
+      }
+    }
+  }
+
+  &__lead {
+    max-width: 520px;
+    font-size: 1.1rem;
+    margin-top: @space-md;
+    color: @color-on-dark-muted;
+  }
+
+  &__actions {
+    display: flex;
+    gap: @space-sm;
+    margin-top: @space-lg;
+    flex-wrap: wrap;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: @space-md;
+    margin: @space-2xl 0 0;
+    padding-top: @space-lg;
+    border-top: 1px solid @color-line-on-dark;
+  }
+
+  &__stat {
+    flex: 1 1 30%;
+    padding-right: @space-lg;
+    border-right: 1px solid @color-line-on-dark;
+
+    &:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    dt {
+      font-size: clamp(2rem, ~"1.6rem + 1vw", 2.75rem);
+      font-weight: @font-bold;
+      color: @color-on-dark;
+      letter-spacing: -0.02em;
+    }
+    dd {
+      margin: 8px 0 0;
+      font-size: 0.78rem;
+      font-weight: @font-medium;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: @color-on-dark-muted;
+    }
+  }
 }
 
-// Produtos
-#produtos {
-    flex-direction: column;
-    padding-top: @max-margin; /* Adicionar padding superior */
-    padding-bottom: @max-margin; /* Adicionar padding inferior */
+@media screen and (min-width: 1025px) {
+  .hero {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+  }
 
+  .hero__media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    height: auto;
+  }
 
-    .item {
-        &.header { /* Estilizar o header da seção */
-            margin-bottom: @large-margin;
-        }
-        .main-title,
-        .sub-title {
-            text-align: center;
-        }
-    }
+  .hero__media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      90deg,
+      @color-onyx 0%,
+      rgba(13, 13, 14, 0.7) 16%,
+      rgba(13, 13, 14, 0) 46%
+    );
+  }
 
-    .catalog {
-        display: grid;
-        width: 100%; /* Ocupar toda a largura disponível */
-        max-width: 1200px; /* Definir largura máxima */
-        margin: 0 auto; /* Centralizar */
-        gap: @large-margin; /* Aumentar espaçamento */
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Tornar responsivo */
+  .hero__media::after {
+    background: linear-gradient(180deg, rgba(13, 13, 14, 0) 60%, @color-onyx 100%);
+  }
 
-        .product {
-            @largura: 100%; /* Ajustar para ser responsivo */
-            @altura: 220px; /* Aumentar altura */
-
-
-            display: flex;
-            flex-direction: column; /* Empilhar imagem e máscara */
-            height: fit-content;
-            align-items: center;
-            justify-content: center;
-            // max-width: @largura; // Removido para usar o grid-template-columns
-            position: relative;
-            border-radius: @arredondado; /* Adicionar borda arredondada ao container */
-            overflow: hidden; /* Para o efeito da máscara */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08); /* Sombra mais suave */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adicionar transição */
-
-
-            .mask {
-                opacity: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center; /* Centralizar conteúdo da máscara */
-                padding: @medium-margin;
-                align-items: center;
-                text-align: center; /* Centralizar texto */
-                width: 100%; /* Ocupar toda a largura */
-                height: 100%; /* Ocupar toda a altura */
-                border-radius: 0; /* Remover, pois o product já tem */
-                color: white;
-                position: absolute;
-                top: 0; /* Cobrir toda a imagem */
-                left: 0; /* Cobrir toda a imagem */
-                background-color: fade(@dark-color, 70%); /* Escurecer um pouco mais */
-                backdrop-filter: blur(5px);
-                transition: opacity 0.4s ease; /* Suavizar transição da máscara */
-
-
-                .main-title {
-                    text-align: center;
-                    color: white;
-                    font-size: @big-font-size;
-                    margin-bottom: @medium-margin; /* Adicionar espaço abaixo do título */
-                }
-
-                .order {
-                    color: white;
-                    background: @main-color;
-                    padding: @small-margin @medium-margin;
-                    border-radius: @arredondado; /* Usar variável global */
-                    font-weight: @font-semi-bold;
-                    font-size: @h2-font-size;
-                    border: 2px solid @main-color; /* Adicionar borda */
-                    transition: background-color .3s ease, color .3s ease; /* Adicionar transição */
-
-                    &:hover {
-                        color: @main-color;
-                        background-color: white;
-                        box-shadow: none; /* Remover sombra, já tem no product */
-                    }
-                }
-
-                // &:hover { // O hover principal será no .product
-                //     opacity: 1;
-                // }
-            }
-
-            &:hover {
-                transform: translateY(-5px); /* Leve elevação no hover */
-                box-shadow: 0 15px 30px rgba(0,0,0,0.12); /* Sombra mais pronunciada */
-
-                .mask {
-                    opacity: 1;
-                    // border: 3px solid @main-color; // Borda pode ser opcional ou mais sutil
-                    // box-shadow: @sombra-padrao; // Sombra na máscara pode ser redundante
-                }
-            }
-
-            img {
-                border-radius: 0; /* Remover, pois o product já tem */
-                width: 100%; /* Ocupar toda a largura */
-                // min-width: @largura; // Removido
-                height: @altura;
-                object-fit: cover; /* Usar cover para preencher melhor */
-                object-position: center; /* Centralizar imagem */
-                box-shadow: none; /* Remover sombra, já tem no product */
-            }
-        }
-    }
-
-    .more {
-        color: @main-color;
-        font-size: 1.5em;
-        text-decoration: none; /* Remover sublinhado */
-        display: inline-flex; /* Para alinhar ícone e texto */
-        align-items: center; /* Para alinhar ícone e texto */
-        margin-top: @large-margin; /* Adicionar margem superior */
-
-        i {
-            margin: 0 @small-margin;
-        }
-
-        &:hover {
-            color: @main-color-light;
-        }
-    }
+  .hero__inner {
+    width: 100%;
+    padding: @space-2xl @space-md;
+  }
 }
 
-//  Sobre
-#sobre {
-    flex-direction: column;
-    background-color: @subtitle-color-light; /* Adicionar cor de fundo sutil */
-    padding-top: @max-margin; /* Adicionar padding */
-    padding-bottom: @max-margin; /* Adicionar padding */
+// ============================================================
+// Proof strip ("contact sheet" — prova fotográfica)
+// ============================================================
+.proof-strip {
+  background: @color-surface;
+  border-bottom: 1px solid @color-line;
 
-    .content {
-        justify-content: space-evenly;
-        align-items: center; /* Alinhar itens verticalmente */
-        gap: @large-margin; /* Adicionar espaçamento */
+  &__frame {
+    .corner-marks();
+    padding: 14px;
+    background: @color-paper;
+    border: 1px solid @color-line;
+    border-radius: @radius-lg;
+  }
 
-        #sobre-img {
-            max-height: 350px; /* Aumentar altura máxima */
-            width: min(450px, 100%);
-            object-fit: cover;
-            border-radius: @arredondado;
-            box-shadow: @sombra-padrao;
-        }
+  &__label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: @font-semi-bold;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: @color-silver-text;
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
 
-        .about {
-            display: inherit;
-            flex-direction: column;
-            padding: 0;
-            width: fit-content;
-            max-width: 500px; /* Definir largura máxima para o texto */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: @color-line;
+    border: 1px solid @color-line;
+  }
 
-            .info {
-                margin: @medium-margin 0;
-                // max-width: 500px; // Movido para .about
+  &__cell {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: @color-onyx;
 
-                .main-title {
-                    font-size: 1.8rem; /* Aumentar um pouco */
-                    color: @main-color;
-                    margin-bottom: @small-margin; /* Adicionar espaço abaixo do título */
-                }
-
-                .info-text {
-                    padding: 0;
-                    margin: 0;
-                    text-align: left; /* Alinhar à esquerda para melhor leitura */
-                    color: @title-color-light;
-                    line-height: 1.6; /* Melhorar legibilidade */
-
-                    a {
-                        color: inherit;
-                        text-decoration: underline;
-
-                        &:hover {
-                            color: #000;
-                        }
-                    }
-                }
-            }
-        }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
     }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
 }
 
-// Parceiros
-#parceiros {
-    flex-direction: column;
-    padding-top: @max-margin; /* Adicionar padding */
-    padding-bottom: @max-margin; /* Adicionar padding */
+// ============================================================
+// Marquee (categorias em movimento)
+// ============================================================
+.marquee {
+  background: @color-onyx;
+  overflow: hidden;
+  border-top: 1px solid @color-line-on-dark;
+  border-bottom: 1px solid @color-line-on-dark;
 
-    .partners {
-        display: flex; /* Usar flex para melhor alinhamento e espaçamento */
-        justify-content: center; /* Centralizar parceiros */
-        flex-wrap: wrap; /* Permitir quebra de linha */
-        gap: @large-margin; /* Adicionar espaçamento entre parceiros */
+  &__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 34s linear infinite;
+  }
 
-        .partner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: white; /* Adicionar fundo branco ao card */
-            padding: @medium-margin; /* Adicionar padding interno */
-            border-radius: @arredondado; /* Arredondar bordas */
-            box-shadow: 0 8px 16px rgba(0,0,0,0.07); /* Sombra suave */
-            width: 250px; /* Definir largura do card */
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: @space-md;
+    padding: @space-sm @space-md;
+    font-size: 0.92rem;
+    font-weight: @font-medium;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: @color-on-dark;
+    white-space: nowrap;
+  }
 
-
-            .partner-photo {
-                width: 180px; /* Ajustar tamanho da foto */
-                height: 180px; /* Tornar quadrado */
-                object-fit: cover;
-                border-radius: 50%; /* Foto redonda */
-                margin: @small-margin 0 @medium-margin 0; /* Ajustar margens */
-                border: 4px solid @main-color-light; /* Adicionar borda à foto */
-
-                &:hover {
-                    transform: scale(1.05); /* Aumentar um pouco no hover */
-                    box-shadow: @sombra-padrao;
-                }
-
-            }
-
-            .partner-media {
-                color: @title-color-light;
-                font-size: 1.8em;
-                display: inherit;
-                width: 100%;
-                justify-content: space-evenly;
-                margin-top: @small-margin; /* Adicionar margem acima dos ícones */
-
-                a {
-                    color: @title-color-light;
-                    cursor: pointer;
-
-                    &:hover i {
-                        color: @main-color;
-                        transform: @pop-translation;
-                        filter: drop-shadow(@sombra-projetada);
-                    }
-                }
-            }
-        }
-
-    }
+  &__dot {
+    color: @color-silver;
+  }
 }
 
-// Contato
-#contato {
-    flex-direction: column;
-    background-color: @body-color; /* Manter cor de fundo padrão */
-    padding-top: @max-margin; /* Adicionar padding */
-    padding-bottom: @max-margin; /* Adicionar padding */
-
-    iframe {
-        margin: 0 @small-margin @large-margin @small-margin; /* Adicionar margem inferior */
-        border-radius: @arredondado;
-        box-shadow: @sombra-padrao;
-        filter: grayscale(100%);
-        transition: filter .5s ease; /* Adicionar transição ao filtro */
-        max-width: 700px; /* Aumentar largura máxima */
-        width: 100%; /* Ocupar largura disponível */
-    }
-
-    iframe:hover {
-        filter: none;
-    }
-
-    // Campo genérico global
-    .item {
-        position: relative;
-
-        &.contact { /* Estilo para o container do formulário e mapa */
-            display: flex;
-            flex-direction: row; /* Mapa ao lado do texto em telas maiores */
-            align-items: flex-start; /* Alinhar ao topo */
-            gap: @large-margin;
-            width: 100%;
-            max-width: 1200px; /* Definir largura máxima */
-        }
-
-        // Área de texto
-        .contact-text {
-            display: inherit;
-            align-items: stretch; /* Esticar itens */
-            justify-content: inherit;
-            flex-direction: column;
-            min-width: 300px; /* Aumentar largura mínima */
-            flex: 1; /* Permitir que o texto ocupe espaço */
-
-            // ENTRE EM CONTATO
-            .main-title {
-                font-size: 1.8rem; /* Aumentar um pouco */
-                text-align: left; /* Alinhar à esquerda */
-            }
-
-            // FALE CONOSTO ...
-            .sub-title {
-                width: auto; /* Largura automática */
-                max-width: 300px; /* Definir largura máxima */
-                text-align: left; /* Alinhar à esquerda */
-                color: @subtitle-color;
-                font-weight: @font-bold  !important;
-                margin-bottom: @medium-margin; /* Adicionar margem inferior */
-            }
-
-            // CONTATOS
-            .contacts {
-                height: 100%;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: stretch; /* Esticar itens */
-                justify-content: center;
-                gap: @medium-margin; /* Adicionar espaçamento entre contatos */
-
-                // MODELO -> CANAL DE CONTATO
-                .contact-media {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between; /* Espaçar melhor os itens */
-                    height: fit-content;
-                    font-size: @big-font-size;
-                    color: @main-color;
-                    // margin: @small-margin 0; // Removido, usando gap no .contacts
-                    width: 100%; // Ocupar toda a largura
-                    // width: min(500px, 100%); // Removido
-
-                    // CONTEÚDO/MODELO
-                    .content {
-                        display: inherit;
-                        align-items: center; /* Alinhar ícone e texto */
-                        // width: 300px; // Removido para ser flexível
-
-                        i {
-                            margin-right: @medium-margin; /* Aumentar margem do ícone */
-                            font-size: 1.8em;
-                        }
-                        b {
-                            color: @dark-color; /* Escurecer texto do contato */
-                        }
-                    }
-
-                    // BOTÃO GENÉRICO/MODELO
-                    .contact-button {
-                        font-size: 1rem;
-                        font-weight: bolder;
-                        text-align: center;
-                        padding: @small-margin @medium-margin; /* Aumentar padding */
-                        border-radius: @arredondado; /* Usar variável global */
-                        color: @main-color;
-                        background-color: @body-color;
-                        border: 2px solid @main-color;
-                        white-space: nowrap; /* Evitar quebra de linha no botão */
-
-
-                        &:hover {
-                            color: white;
-                            background-color: @main-color;
-                            border: 2px solid transparent;
-                            box-shadow: @sombra-padrao;
-                            transform: @pop-translation;
-                        }
-                    }
-                }
-            }
-        }
-    }
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-// Rodapé
-footer {
-    background: @footer-bg;
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+  }
+}
+
+// ============================================================
+// Differentiators
+// ============================================================
+.differentiators {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: @color-line;
+    border: 1px solid @color-line;
+    counter-reset: item;
+  }
+}
+
+.differentiator-card {
+  position: relative;
+  padding: @space-2xl @space-md @space-lg;
+  background: @color-surface;
+  transition: @transition-base;
+  counter-increment: item;
+  overflow: hidden;
+
+  &::before {
+    content: counter(item, decimal-leading-zero);
+    position: absolute;
+    top: -0.22em;
+    right: @space-sm;
+    font-size: 4.2rem;
+    font-weight: @font-bold;
+    line-height: 1;
+    color: @color-line;
+    z-index: 0;
+  }
+
+  i {
+    position: relative;
+    font-size: 1.6rem;
+    color: @color-ink;
+    margin-bottom: @space-md;
+    display: block;
+  }
+
+  h3 {
+    position: relative;
+    margin-bottom: @space-xs;
+    font-size: 1.1rem;
+  }
+
+  p {
+    position: relative;
+    font-size: 0.92rem;
+  }
+
+  &:hover {
+    background: @color-surface-alt;
+  }
+}
+
+// ============================================================
+// Catalog preview
+// ============================================================
+.catalog-preview {
+  background: @color-surface;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: @space-md;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: @space-lg;
+  }
+}
+
+.catalog-group-card {
+  display: flex;
+  border-radius: @radius-md;
+  overflow: hidden;
+  border: 1px solid @color-line;
+  background: @color-paper;
+  transition: @transition-base;
+
+  &__media {
+    width: 46%;
+    flex-shrink: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: @color-onyx;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+  }
+
+  &__body {
+    padding: @space-lg @space-md;
+    display: flex;
     flex-direction: column;
-    color: white;
-    padding: @large-margin 0 @small-margin 0; /* Adicionar padding vertical */
+    justify-content: center;
 
-    .main-container {
-        padding: @small-margin @large-margin !important; /* Ajustar padding horizontal */
-        color: @body-color;
-        display: flex; /* Usar flex para alinhar itens */
-        justify-content: space-between; /* Espaçar itens */
-        align-items: center; /* Alinhar verticalmente */
-        flex-wrap: wrap; /* Permitir quebra de linha */
-        gap: @medium-margin; /* Adicionar espaçamento */
-
-        .end {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center; /* Centralizar texto */
-
-            .logo {
-                filter: contrast(0) brightness(999);
-                margin-bottom: @small-margin; /* Adicionar margem abaixo do logo */
-            }
-
-            a {
-                color: @body-color;
-                font-weight: @font-black;
-                font-size: 18px;
-                text-decoration: none; /* Remover sublinhado */
-            }
-
-        }
-
-        ul {
-            min-height: auto; /* Altura automática */
-            padding: 0 @medium-margin;
-            display: flex; /* Mostrar itens em linha */
-            flex-direction: column; /* Empilhar em mobile, ajustar em media query se necessário */
-            align-items: flex-start; /* Alinhar à esquerda */
-            gap: @small-margin; /* Adicionar espaçamento entre itens */
-
-
-            li {
-                font-weight: 300;
-                list-style: none;
-                padding: 0; /* Remover padding individual */
-                // padding: 10px; // Removido
-
-                a {
-                    color: @body-color;
-                    text-decoration: none; /* Remover sublinhado */
-
-                    &:hover {
-                        color: @main-color;
-                        text-decoration: underline; /* Manter sublinhado no hover */
-                        // text-decoration: underline double; // Double pode ser excessivo
-                        line-height: auto;
-                    }
-                }
-            }
-        }
+    h3 {
+      margin-bottom: @space-xs;
+      font-size: 1.3rem;
     }
 
-    // .main-container:last-child { // Estilo para o container do copyright
-    //     justify-content: center;
-    //     padding-top: @medium-margin;
-    //     border-top: 1px solid fade(@body-color, 20%);
-    // }
-
-
-    span {
-        font-size: 12px;
-        color: @title-color-light;
-        width: 100%; /* Ocupar toda a largura */
-        text-align: center; /* Centralizar texto do copyright */
-        padding-top: @medium-margin; /* Adicionar espaçamento acima */
-        border-top: 1px solid fade(@body-color, 10%); /* Adicionar linha divisória sutil */
-        margin-top: @medium-margin; /* Adicionar margem acima */
+    p {
+      font-size: 0.92rem;
     }
+  }
+
+  &__count {
+    margin-top: @space-md;
+    font-size: 0.76rem;
+    font-weight: @font-semi-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: @color-silver-text;
+  }
+
+  &:hover {
+    border-color: @color-line-strong;
+    box-shadow: @shadow-md;
+
+    .catalog-group-card__media img {
+      transform: scale(1.06);
+    }
+  }
+}
+
+// ============================================================
+// About teaser
+// ============================================================
+.about-teaser {
+  &__inner {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: @space-2xl;
+    align-items: center;
+  }
+
+  &__media {
+    .corner-marks();
+    padding: 10px;
+    background: @color-surface;
+    border: 1px solid @color-line;
+    border-radius: @radius-lg;
+    box-shadow: @shadow-md;
+
+    img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: calc(@radius-lg - 4px);
+      filter: grayscale(1) contrast(1.05);
+    }
+  }
+
+  &__content {
+    p {
+      margin-bottom: @space-sm;
+    }
+  }
+}
+
+// ============================================================
+// Responsive
+// ============================================================
+@media screen and (max-width: @bp-lg) {
+  .differentiators__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .catalog-preview__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-teaser__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-strip__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: @bp-sm) {
+  .hero__stat {
+    flex: 1 1 40%;
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .differentiators__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .differentiator-card::before {
+    font-size: 3.2rem;
+  }
+
+  .catalog-group-card {
+    flex-direction: column;
+  }
+
+  .catalog-group-card__media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
 }
