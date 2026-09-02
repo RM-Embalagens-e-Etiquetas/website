@@ -1,49 +1,39 @@
 import Link from 'next/link'
-import { PRODUCT_GROUPS, getCategoriesByGroup } from '@/lib/productCategories'
-import { getCategoryCover } from '@/lib/getProductImages'
 
-const CatalogPreview = () => {
+const CatalogPreview = ({ home, groups }) => {
   return (
     <section className="catalog-preview">
       <div className="section-inner">
         <div className="section-heading">
-          <span className="eyebrow">Catálogo</span>
-          <h2>Uma linha completa de embalagens e etiquetas</h2>
-          <p>
-            Da sacola ao acabamento final, produzimos os itens que acompanham a experiência de
-            compra da sua marca.
-          </p>
+          {home?.catalogEyebrow && <span className="eyebrow">{home.catalogEyebrow}</span>}
+          <h2>{home?.catalogTitle}</h2>
+          {home?.catalogLead && <p>{home.catalogLead}</p>}
         </div>
 
         <div className="catalog-preview__grid">
-          {PRODUCT_GROUPS.map((group) => {
-            const categories = getCategoriesByGroup(group.slug)
-            const cover = getCategoryCover(categories[0]?.slug)
-
-            return (
-              <Link
-                key={group.slug}
-                href={`/produtos#${group.slug}`}
-                className="catalog-group-card"
-              >
-                <div className="catalog-group-card__media">
-                  {cover && <img src={cover} alt={group.title} loading="lazy" />}
-                </div>
-                <div className="catalog-group-card__body">
-                  <h3>{group.title}</h3>
-                  <p>{group.description}</p>
-                  <span className="catalog-group-card__count">
-                    {categories.length} categorias
-                  </span>
-                </div>
-              </Link>
-            )
-          })}
+          {(groups || []).map((group) => (
+            <Link
+              key={group.slug}
+              href={`/produtos#${group.slug}`}
+              className="catalog-group-card"
+            >
+              <div className="catalog-group-card__media">
+                {group.cover && <img src={group.cover} alt={group.title} loading="lazy" />}
+              </div>
+              <div className="catalog-group-card__body">
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+                <span className="catalog-group-card__count">
+                  {group.count} {group.count === 1 ? 'categoria' : 'categorias'}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
 
         <div className="catalog-preview__footer">
           <Link href="/produtos" className="button button--primary">
-            Explorar catálogo completo
+            {home?.catalogButtonLabel || 'Explorar catálogo completo'}
           </Link>
         </div>
       </div>

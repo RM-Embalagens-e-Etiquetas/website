@@ -1,21 +1,19 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import {
-  PRODUCT_CATEGORIES,
-  PRODUCT_GROUPS,
-  getCategoriesByGroup,
-  getCategoryBySlug,
-} from '@/lib/productCategories'
-import { getProductImages, getCategoryCover } from '@/lib/getProductImages'
 import ProductGallery from '@/components/products/ProductGallery'
-
-export function generateStaticParams() {
-  return PRODUCT_CATEGORIES.map((category) => ({ slug: category.slug }))
-}
+import { copy } from '@/lib/copy'
+import {
+  categoryCover,
+  galleryImages,
+  getCategoriesByGroupId,
+  getCategoryBySlug,
+  getSite,
+  whatsappUrl,
+} from '@/lib/cms'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
-  const category = getCategoryBySlug(slug)
+  const category = await getCategoryBySlug(slug)
   if (!category) return {}
 
   return {
@@ -26,21 +24,21 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductCategoryPage({ params }) {
   const { slug } = await params
-  const category = getCategoryBySlug(slug)
+  const [category, site] = await Promise.all([getCategoryBySlug(slug), getSite()])
   if (!category) notFound()
 
-  const images = getProductImages(category.slug)
-  const group = PRODUCT_GROUPS.find((item) => item.slug === category.group)
-  const related = getCategoriesByGroup(category.group).filter(
-    (item) => item.slug !== category.slug
-  )
+  const images = galleryImages(category)
+  const group = typeof category.group === 'object' ? category.group : null
+  const relatedDocs = group ? await getCategoriesByGroupId(group.id) : []
+  const related = relatedDocs.filter((item) => item.slug !== category.slug)
+  const waUrl = whatsappUrl(site.whatsapp)
 
   return (
     <>
       <section className="page-header">
         <div className="section-inner">
           <div className="breadcrumb">
-            <Link href="/produtos">Produtos</Link>
+            <Link href="/produtos">{copy(site, 'navProducts')}</Link>
             <span>/</span>
             <span>{group?.title}</span>
             <span>/</span>
@@ -51,16 +49,11 @@ export default async function ProductCategoryPage({ params }) {
           <p>{category.description}</p>
 
           <div className="page-header__actions">
-            <a
-              href="https://wa.me/5521964282763"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button button--primary"
-            >
-              Encomendar este produto
+            <a href={waUrl} target="_blank" rel="noopener noreferrer" className="button button--primary">
+              {copy(site, 'productOrder')}
             </a>
             <Link href="/produtos" className="button button--ghost">
-              Voltar ao catálogo
+              {copy(site, 'productBack')}
             </Link>
           </div>
         </div>
@@ -71,7 +64,7 @@ export default async function ProductCategoryPage({ params }) {
           {images.length > 0 ? (
             <ProductGallery images={images} />
           ) : (
-            <p>Novas fotos desta categoria em breve.</p>
+            <p>{copy(site, 'galleryEmpty')}</p>
           )}
         </div>
       </section>
@@ -80,11 +73,13 @@ export default async function ProductCategoryPage({ params }) {
         <section className="related-categories">
           <div className="section-inner">
             <div className="section-heading section-heading--left">
-              <h2>Outras categorias em {group?.title}</h2>
+              <h2>
+                {copy(site, 'relatedPrefix')} {group?.title}
+              </h2>
             </div>
             <div className="related-categories__grid">
               {related.map((item) => {
-                const cover = getCategoryCover(item.slug)
+                const cover = categoryCover(item)
                 return (
                   <Link key={item.slug} href={`/produtos/${item.slug}`} className="mini-card">
                     <div className="mini-card__media">

@@ -1,47 +1,56 @@
 import Link from 'next/link'
+import { mediaUrl } from '@/lib/cms'
 
-const HERO_STATS = [
-  { value: '16', label: 'linhas de produto' },
-  { value: '100%', label: 'personalização de arte' },
-  { value: 'BR', label: 'envio para todo o país' },
-]
+function TitleWithAccent({ title, accent }) {
+  if (!title) return null
+  if (!accent || !title.includes(accent)) return title
 
-const Hero = () => {
+  const parts = title.split(accent)
+  return (
+    <>
+      {parts[0]}
+      <span className="accent">{accent}</span>
+      {parts.slice(1).join(accent)}
+    </>
+  )
+}
+
+const Hero = ({ home, whatsappUrl }) => {
+  const image = mediaUrl(home?.heroImage)
+
   return (
     <section className="hero">
       <div className="hero__media">
-        <img src="/hero.jpg" alt="" role="presentation" loading="eager" />
+        {image && <img src={image} alt="" role="presentation" loading="eager" />}
       </div>
 
       <div className="hero__inner">
         <div className="hero__content">
-          <span className="eyebrow eyebrow--on-dark">Fabricante e distribuidora de embalagens</span>
+          {home?.heroEyebrow && (
+            <span className="eyebrow eyebrow--on-dark">{home.heroEyebrow}</span>
+          )}
           <h1>
-            Embalagens e etiquetas que constroem a <span className="accent">identidade</span> da
-            sua marca
+            <TitleWithAccent title={home?.heroTitle} accent={home?.heroAccent} />
           </h1>
-          <p className="hero__lead">
-            Produzimos sacolas, etiquetas, tags e acabamentos personalizados para marcas que
-            valorizam apresentação, consistência e qualidade em cada detalhe.
-          </p>
+          {home?.heroLead && <p className="hero__lead">{home.heroLead}</p>}
 
           <div className="hero__actions">
             <Link href="/produtos" className="button button--invert">
-              Ver catálogo completo
+              {home?.heroPrimaryLabel || 'Ver catálogo completo'}
             </Link>
             <a
-              href="https://wa.me/5521964282763"
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="button button--outline-light"
             >
-              Solicitar orçamento
+              {home?.heroSecondaryLabel || 'Solicitar orçamento'}
             </a>
           </div>
         </div>
 
         <dl className="hero__stats">
-          {HERO_STATS.map((stat) => (
+          {(home?.stats || []).map((stat) => (
             <div key={stat.label} className="hero__stat">
               <dt>{stat.value}</dt>
               <dd>{stat.label}</dd>

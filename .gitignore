@@ -24,3 +24,10 @@ out
 *.njsproj
 *.sln
 *.sw?
+.vercel
+.env
+payload.sqlite
+payload.sqlite-*
+*.sqlite
+media
+src/payload-types.ts

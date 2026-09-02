@@ -2,6 +2,7 @@
   "name": "rm-embalagens",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "styles": "lessc --js src/styles/less/index.less src/app/globals.css",
     "predev": "npm run styles",
@@ -9,17 +10,32 @@
     "prebuild": "npm run styles",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
+    "seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
-    "next": "^15.5.0",
+    "@payloadcms/db-sqlite": "^3.88.0",
+    "@payloadcms/next": "^3.88.0",
+    "@payloadcms/richtext-lexical": "^3.88.0",
+    "graphql": "16.8.1",
+    "next": "15.4.11",
+    "payload": "^3.88.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "sharp": "^0.35.4",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
     "eslint": "^9.25.0",
-    "eslint-config-next": "^15.5.0",
-    "less": "^4.3.0"
+    "eslint-config-next": "15.4.11",
+    "less": "^4.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "5.8.3"
   }
 }

@@ -1,14 +1,12 @@
 import Link from 'next/link'
-import { getCategoryCover, getProductImages } from '@/lib/getProductImages'
 
 const CategoryCard = ({ category }) => {
-  const cover = getCategoryCover(category.slug)
-  const count = getProductImages(category.slug).length
+  const count = category.photoCount || 0
 
   return (
     <Link href={`/produtos/${category.slug}`} className="category-card">
       <div className="category-card__media">
-        {cover && <img src={cover} alt={category.title} loading="lazy" />}
+        {category.cover && <img src={category.cover} alt={category.title} loading="lazy" />}
       </div>
       <div className="category-card__body">
         <h3>{category.title}</h3>

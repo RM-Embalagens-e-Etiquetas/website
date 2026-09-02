@@ -1,7 +1,5 @@
-import { PRODUCT_CATEGORIES } from '@/lib/productCategories'
-
-const Marquee = () => {
-  const items = PRODUCT_CATEGORIES.map((category) => category.title)
+const Marquee = ({ titles }) => {
+  const items = titles || []
   const track = [...items, ...items]
 
   return (

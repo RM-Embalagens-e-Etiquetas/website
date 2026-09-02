@@ -1,25 +1,23 @@
 import Link from 'next/link'
-import aboutImage from '@/assets/img/inicial/sacolas/IMG-20220726-WA0040.jpg'
+import { mediaUrl } from '@/lib/cms'
 
-const AboutTeaser = () => {
+const AboutTeaser = ({ home }) => {
+  const image = mediaUrl(home?.aboutImage)
+
   return (
     <section className="about-teaser">
       <div className="section-inner about-teaser__inner">
         <div className="about-teaser__media">
-          <img src={aboutImage.src} alt="Produção RM Embalagens" />
+          {image && <img src={image} alt="Produção RM Embalagens" />}
         </div>
 
         <div className="about-teaser__content">
-          <span className="eyebrow">Quem somos</span>
-          <h2>Uma fabricante próxima de cada cliente</h2>
-          <p>
-            A RM Embalagens fabrica, vende e distribui embalagens, etiquetas, envelopes, lacres e
-            demais itens de identidade visual. Trabalhamos com confecções, e-commerces e negócios
-            de todos os portes, unindo produção própria a um acompanhamento próximo em cada
-            pedido.
-          </p>
+          {home?.aboutEyebrow && <span className="eyebrow">{home.aboutEyebrow}</span>}
+          <h2>{home?.aboutTitle}</h2>
+          <p>{home?.aboutText}</p>
           <Link href="/sobre" className="link-arrow">
-            Conheça nossa história <i className="fal fa-arrow-right" aria-hidden="true"></i>
+            {home?.aboutLinkLabel || 'Conheça nossa história'}{' '}
+            <i className="fal fa-arrow-right" aria-hidden="true"></i>
           </Link>
         </div>
       </div>
