@@ -144,7 +144,7 @@ function CloseNavOnRoute() {
 
   useEffect(() => {
     setNavOpen(false)
-  }, [pathname])
+  }, [pathname, setNavOpen])
 
   return null
 }

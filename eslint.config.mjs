@@ -17,6 +17,7 @@ const eslintConfig = [
       'out/**',
       'node_modules/**',
       'src/assets/lib/**',
+      'src/admin/**',
       'src/app/(payload)/**',
       'src/payload-types.ts',
     ],

@@ -1,3 +1,5 @@
+import type { CollectionBeforeValidateHook } from 'payload'
+
 export function slugify(text = '') {
   return String(text)
     .normalize('NFD')
@@ -8,7 +10,7 @@ export function slugify(text = '') {
     .replace(/(^-|-$)/g, '')
 }
 
-export const setSlugFromTitle = ({ data }) => {
+export const setSlugFromTitle: CollectionBeforeValidateHook = ({ data }) => {
   if (data && !data.slug && data.title) {
     data.slug = slugify(data.title)
   }
