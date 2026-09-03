@@ -1,10 +1,10 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { mediaUrl } from '@/lib/media-url'
 import ScrollToLine from './ScrollToLine'
 
 function mediaSrc(doc) {
-  return mediaUrl(doc)
+  if (!doc || typeof doc !== 'object') return null
+  return doc.url || null
 }
 
 export default async function CategoryGallery() {

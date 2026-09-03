@@ -1,10 +1,10 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { mediaUrl } from '@/lib/media-url'
 import { Icon } from './Icon'
 
 function mediaSrc(doc) {
-  return mediaUrl(doc)
+  if (!doc || typeof doc !== 'object') return null
+  return doc.url || null
 }
 
 const PAGES = [
