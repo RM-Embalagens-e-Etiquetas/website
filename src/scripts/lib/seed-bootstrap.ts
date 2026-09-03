@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { put } from '@vercel/blob'
 import type { Payload } from 'payload'
 
 import {
@@ -219,6 +220,9 @@ export async function uploadFile(
     depth: 0,
   })
 
+  const doc = existing.docs[0]
+  if (doc && !force && isBlobUrl(doc.url)) return doc
+
   const staticPath =
     publicPath ||
     (absPath.includes('/public/')
@@ -230,29 +234,44 @@ export async function uploadFile(
   }
 
   const buffer = await loadSeedBuffer(absPath, staticPath)
-  const file = {
-    data: buffer,
-    mimetype: mimeFromName(filename),
-    name: filename,
-    size: buffer.length,
+  const mimeType = mimeFromName(filename)
+  const token = process.env.BLOB_READ_WRITE_TOKEN
+
+  if (!token?.startsWith('vercel_blob_rw_')) {
+    throw new Error(
+      'BLOB_READ_WRITE_TOKEN ausente ou inválido. Copie de Vercel → Settings → Environment Variables.',
+    )
   }
 
-  const doc = existing.docs[0]
+  const blob = await put(`media/${filename}`, buffer, {
+    access: 'public',
+    token,
+    addRandomSuffix: false,
+    contentType: mimeType,
+  })
+
+  const data = {
+    alt,
+    url: blob.url,
+    filename,
+    mimeType,
+    filesize: buffer.length,
+  }
+
   if (doc) {
-    if (!force && isBlobUrl(doc.url)) return doc
-    return payload.update({
+    await payload.db.updateOne({
       collection: 'media',
       id: doc.id,
-      data: { alt },
-      file,
+      data,
     })
+    return { ...doc, ...data }
   }
 
-  return payload.create({
+  const created = await payload.db.create({
     collection: 'media',
-    data: { alt },
-    file,
+    data,
   })
+  return created
 }
 
 async function listProductImages(slug: string, limit?: number) {
