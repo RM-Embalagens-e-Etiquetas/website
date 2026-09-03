@@ -12,8 +12,24 @@ import {
 } from '../../lib/copy'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const root = path.resolve(dirname, '../../..')
+const root = process.cwd()
 const productsDir = path.join(root, 'public/products')
+
+function siteBase() {
+  return (process.env.NEXT_PUBLIC_SERVER_URL || 'https://rm-embalagens.vercel.app').replace(/\/$/, '')
+}
+
+async function loadSeedBuffer(localPath: string, publicPath: string) {
+  if (fs.existsSync(localPath)) {
+    return fs.readFileSync(localPath)
+  }
+
+  const res = await fetch(`${siteBase()}${publicPath}`)
+  if (!res.ok) {
+    throw new Error(`Arquivo não encontrado: ${localPath} nem ${publicPath} (${res.status})`)
+  }
+  return Buffer.from(await res.arrayBuffer())
+}
 
 export const CATALOG_GROUPS = [
   {
@@ -194,6 +210,7 @@ export async function uploadFile(
   alt: string,
   filename: string,
   force = false,
+  publicPath?: string,
 ) {
   const existing = await payload.find({
     collection: 'media',
@@ -202,7 +219,17 @@ export async function uploadFile(
     depth: 0,
   })
 
-  const buffer = fs.readFileSync(absPath)
+  const staticPath =
+    publicPath ||
+    (absPath.includes('/public/')
+      ? absPath.slice(absPath.indexOf('/public/') + '/public'.length)
+      : null)
+
+  if (!staticPath) {
+    throw new Error(`Caminho público não definido para ${filename}`)
+  }
+
+  const buffer = await loadSeedBuffer(absPath, staticPath)
   const file = {
     data: buffer,
     mimetype: mimeFromName(filename),
@@ -228,15 +255,26 @@ export async function uploadFile(
   })
 }
 
-function listProductImages(slug: string, limit?: number) {
+async function listProductImages(slug: string, limit?: number) {
   const dir = path.join(productsDir, slug)
-  if (!fs.existsSync(dir)) return []
-  const files = fs
-    .readdirSync(dir)
-    .filter((file) => /\.(jpe?g|png|webp)$/i.test(file))
-    .sort()
-    .map((file) => path.join(dir, file))
-  return limit ? files.slice(0, limit) : files
+  if (fs.existsSync(dir)) {
+    const files = fs
+      .readdirSync(dir)
+      .filter((file) => /\.(jpe?g|png|webp)$/i.test(file))
+      .sort()
+      .map((file) => path.join(dir, file))
+    return limit ? files.slice(0, limit) : files
+  }
+
+  const discovered: string[] = []
+  const max = limit || 25
+  for (let i = 1; i <= max; i += 1) {
+    const publicPath = `/products/${slug}/${String(i).padStart(2, '0')}.jpg`
+    const res = await fetch(`${siteBase()}${publicPath}`, { method: 'HEAD' })
+    if (!res.ok) break
+    discovered.push(path.join(root, 'public', publicPath.slice(1)))
+  }
+  return discovered
 }
 
 async function syncCategoryGallery(
@@ -245,18 +283,20 @@ async function syncCategoryGallery(
   force: boolean,
   imageLimit?: number,
 ) {
-  const files = listProductImages(category.slug, imageLimit)
+  const files = await listProductImages(category.slug, imageLimit)
   const galleryIds: Array<number | string> = []
 
   for (const [fileIndex, filePath] of files.entries()) {
     const ext = path.extname(filePath)
     const filename = `${category.slug}-${String(fileIndex + 1).padStart(2, '0')}${ext}`
+    const publicPath = `/products/${category.slug}/${String(fileIndex + 1).padStart(2, '0')}${ext}`
     const media = await uploadFile(
       payload,
       filePath,
       `${category.title} — foto ${fileIndex + 1}`,
       filename,
       force,
+      publicPath,
     )
     galleryIds.push(media.id)
   }
@@ -302,15 +342,17 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
     'Hero RM Embalagens',
     'hero.jpg',
     force,
+    '/hero.jpg',
   )
   summary.media++
 
   const aboutImage = await uploadFile(
     payload,
-    path.join(root, 'src/assets/img/inicial/sacolas/IMG-20220726-WA0040.jpg'),
+    path.join(root, 'public/sobre-producao.jpg'),
     'Produção RM Embalagens',
     'sobre-producao.jpg',
     force,
+    '/sobre-producao.jpg',
   )
   summary.media++
 
@@ -387,16 +429,18 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
         console.log(`Categoria atualizada: ${category.title}`)
       } else {
         summary.skipped.push(`categoria:${category.slug}`)
-        const files = listProductImages(category.slug)
+        const files = await listProductImages(category.slug)
         for (const [fileIndex, filePath] of files.entries()) {
           const ext = path.extname(filePath)
           const filename = `${category.slug}-${String(fileIndex + 1).padStart(2, '0')}${ext}`
+          const publicPath = `/products/${category.slug}/${String(fileIndex + 1).padStart(2, '0')}${ext}`
           await uploadFile(
             payload,
             filePath,
             `${category.title} — foto ${fileIndex + 1}`,
             filename,
             false,
+            publicPath,
           )
           summary.media++
         }
@@ -435,16 +479,18 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
     }
   } else {
     for (const category of CATALOG_CATEGORIES) {
-      const files = listProductImages(category.slug)
+      const files = await listProductImages(category.slug)
       for (const [fileIndex, filePath] of files.entries()) {
         const ext = path.extname(filePath)
         const filename = `${category.slug}-${String(fileIndex + 1).padStart(2, '0')}${ext}`
+        const publicPath = `/products/${category.slug}/${String(fileIndex + 1).padStart(2, '0')}${ext}`
         await uploadFile(
           payload,
           filePath,
           `${category.title} — foto ${fileIndex + 1}`,
           filename,
           false,
+          publicPath,
         )
         summary.media++
       }
