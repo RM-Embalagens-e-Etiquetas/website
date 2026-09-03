@@ -34,6 +34,7 @@ const db = usePostgres
         connectionString: postgresUrl,
       },
       prodMigrations: migrations,
+      push: false,
     })
   : sqliteAdapter({
       client: {

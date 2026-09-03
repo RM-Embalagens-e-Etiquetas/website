@@ -15,6 +15,7 @@
     "generate:importmap": "payload generate:importmap",
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
+    "fix:migration": "tsx src/scripts/fix-dev-migration.ts",
     "seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
