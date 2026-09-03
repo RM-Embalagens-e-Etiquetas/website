@@ -11,6 +11,8 @@ export async function getCms() {
 
 export function mediaUrl(doc) {
   if (!doc || typeof doc !== 'object') return null
+  // Blob privado: servir via API do Payload (funciona também com blob público)
+  if (doc.filename) return `/api/media/file/${encodeURIComponent(doc.filename)}`
   return doc.url || null
 }
 

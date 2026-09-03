@@ -4,6 +4,7 @@ import ScrollToLine from './ScrollToLine'
 
 function mediaSrc(doc) {
   if (!doc || typeof doc !== 'object') return null
+  if (doc.filename) return `/api/media/file/${encodeURIComponent(doc.filename)}`
   return doc.url || null
 }
 

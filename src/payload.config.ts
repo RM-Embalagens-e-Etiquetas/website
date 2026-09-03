@@ -27,6 +27,9 @@ dotenv.config()
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
 const usePostgres = Boolean(postgresUrl)
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+const blobAccess = (process.env.BLOB_STORE_ACCESS === 'public' ? 'public' : 'private') as
+  | 'public'
+  | 'private'
 const onVercel = Boolean(process.env.VERCEL)
 
 if (usePostgres && onVercel && !blobToken) {
@@ -58,6 +61,7 @@ const plugins =
             media: true,
           },
           token: blobToken,
+          access: blobAccess,
           clientUploads: true,
         }),
       ]
