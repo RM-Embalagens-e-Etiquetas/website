@@ -58,6 +58,7 @@ const plugins =
             media: true,
           },
           token: blobToken,
+          clientUploads: true,
         }),
       ]
     : []

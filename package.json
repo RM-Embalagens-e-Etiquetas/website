@@ -16,7 +16,10 @@
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
     "fix:migration": "tsx src/scripts/fix-dev-migration.ts",
-    "seed": "tsx src/scripts/seed.ts"
+    "seed": "tsx src/scripts/seed.ts",
+    "content:sync": "tsx src/scripts/content-sync.ts",
+    "content:sync:force": "tsx src/scripts/content-sync.ts --force",
+    "content:sync:media": "tsx src/scripts/content-sync.ts --media"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

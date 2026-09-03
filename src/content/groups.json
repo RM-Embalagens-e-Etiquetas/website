@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "sacolas",
+    "title": "Sacolas",
+    "description": "Sacolas plásticas, em TNT e em algodão, produzidas e personalizadas com a identidade da sua marca."
+  },
+  {
+    "slug": "etiquetas",
+    "title": "Etiquetas",
+    "description": "Etiquetas adesivas, emborrachadas, bordadas e em DTF para roupas, acessórios e embalagens."
+  },
+  {
+    "slug": "tags-e-acessorios",
+    "title": "Tags & Acessórios",
+    "description": "Tags, chaveiros, lacres de segurança, acabamentos metálicos e demais itens complementares."
+  },
+  {
+    "slug": "embalagens",
+    "title": "Embalagens",
+    "description": "Caixas personalizadas e papel de seda para finalizar a experiência de compra com sofisticação."
+  }
+]

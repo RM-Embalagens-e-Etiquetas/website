@@ -1,0 +1,13 @@
+{
+  "hero": {
+    "path": "public/hero.jpg",
+    "filename": "hero.jpg",
+    "alt": "Hero RM Embalagens"
+  },
+  "about": {
+    "path": "src/assets/img/inicial/sacolas/IMG-20220726-WA0040.jpg",
+    "filename": "sobre-producao.jpg",
+    "alt": "Produção RM Embalagens"
+  },
+  "proofSlugs": ["sacolas-algodao", "etiquetas-bordadas", "chaveiros", "lacres-seguranca"]
+}
