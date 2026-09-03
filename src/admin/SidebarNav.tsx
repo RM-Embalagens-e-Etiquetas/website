@@ -158,19 +158,13 @@ export default function SidebarNav({ groups }: { groups: Group[] }) {
       </NavLink>
 
       <p className="rm-nav__label">Empresa</p>
-      <NavLink href="/admin/globals/site" icon="brand">
-        Logo, menu e WhatsApp
+      <NavLink href="/admin/globals/company" icon="brand">
+        Dados da empresa
       </NavLink>
 
-      <p className="rm-nav__label">Páginas do site</p>
-      <NavLink href="/admin/globals/home" icon="home">
-        Início
-      </NavLink>
-      <NavLink href="/admin/globals/about" icon="about">
-        Sobre
-      </NavLink>
-      <NavLink href="/admin/globals/contact" icon="contact">
-        Contato
+      <p className="rm-nav__label">Home</p>
+      <NavLink href="/admin/globals/home-config" icon="home">
+        Configuração da home
       </NavLink>
 
       <p className="rm-nav__label">Catálogo</p>

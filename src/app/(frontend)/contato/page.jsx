@@ -1,27 +1,24 @@
-import { copy } from '@/lib/copy'
-import { getContact, getSite, whatsappUrl } from '@/lib/cms'
+import { CONTACT, COPY, SEO } from '@/lib/copy'
+import { getCompany, whatsappUrl } from '@/lib/cms'
 
 export async function generateMetadata() {
-  const contact = await getContact()
   return {
-    title: contact.seoTitle || 'Contato | RM Embalagens',
-    description:
-      contact.seoDescription ||
-      'Fale com a RM Embalagens pelo WhatsApp ou Instagram e solicite um orçamento personalizado.',
+    title: SEO.contactTitle,
+    description: SEO.contactDescription,
   }
 }
 
 export default async function ContatoPage() {
-  const [contact, site] = await Promise.all([getContact(), getSite()])
-  const waUrl = whatsappUrl(site.whatsapp)
+  const company = await getCompany()
+  const waUrl = whatsappUrl(company.whatsapp)
 
   return (
     <>
       <section className="page-header">
         <div className="section-inner">
-          {contact.eyebrow && <span className="eyebrow">{contact.eyebrow}</span>}
-          <h1>{contact.title}</h1>
-          <p>{contact.lead}</p>
+          {CONTACT.eyebrow && <span className="eyebrow">{CONTACT.eyebrow}</span>}
+          <h1>{CONTACT.title}</h1>
+          <p>{CONTACT.lead}</p>
         </div>
       </section>
 
@@ -31,46 +28,46 @@ export default async function ContatoPage() {
             <div className="contact-method">
               <i className="fab fa-whatsapp" aria-hidden="true"></i>
               <div>
-                <h3>{copy(contact, 'whatsappTitle')}</h3>
+                <h3>{COPY.contactWhatsapp}</h3>
                 <a href={waUrl} target="_blank" rel="noopener noreferrer">
-                  {site.phone}
+                  {company.phone}
                 </a>
               </div>
             </div>
 
-            {site.instagramUrl && (
+            {company.instagramUrl && (
               <div className="contact-method">
                 <i className="fab fa-instagram" aria-hidden="true"></i>
                 <div>
-                  <h3>{copy(contact, 'instagramTitle')}</h3>
-                  <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
-                    {site.instagramHandle || '@rmembalagens'}
+                  <h3>{COPY.contactInstagram}</h3>
+                  <a href={company.instagramUrl} target="_blank" rel="noopener noreferrer">
+                    {company.instagramHandle || '@rmembalagens'}
                   </a>
                 </div>
               </div>
             )}
 
-            {site.address && (
+            {company.address && (
               <div className="contact-method">
                 <i className="fal fa-map-marker-alt" aria-hidden="true"></i>
                 <div>
-                  <h3>{copy(contact, 'addressTitle')}</h3>
-                  <span>{site.address}</span>
+                  <h3>{COPY.contactAddress}</h3>
+                  <span>{company.address}</span>
                 </div>
               </div>
             )}
           </div>
 
-          {site.mapEmbedUrl && (
+          {company.mapEmbedUrl && (
             <iframe
-              src={site.mapEmbedUrl}
+              src={company.mapEmbedUrl}
               width="560"
               height="360"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={site.address || 'Mapa'}
+              title={company.address || 'Mapa'}
             ></iframe>
           )}
         </div>
@@ -79,12 +76,12 @@ export default async function ContatoPage() {
       <section className="how-to-order">
         <div className="section-inner">
           <div className="section-heading">
-            {contact.stepsEyebrow && <span className="eyebrow">{contact.stepsEyebrow}</span>}
-            <h2>{contact.stepsTitle}</h2>
+            {CONTACT.stepsEyebrow && <span className="eyebrow">{CONTACT.stepsEyebrow}</span>}
+            <h2>{CONTACT.stepsTitle}</h2>
           </div>
 
           <ol className="steps-grid">
-            {(contact.steps || []).map((step, index) => (
+            {CONTACT.steps.map((step, index) => (
               <li key={step.title} className="step-card">
                 <span className="step-card__number">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{step.title}</h3>
@@ -95,7 +92,7 @@ export default async function ContatoPage() {
 
           <div className="how-to-order__cta">
             <a href={waUrl} target="_blank" rel="noopener noreferrer" className="button button--primary">
-              {contact.ctaLabel || 'Iniciar conversa no WhatsApp'}
+              {CONTACT.ctaLabel}
             </a>
           </div>
         </div>

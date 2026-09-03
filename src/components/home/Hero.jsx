@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { mediaUrl } from '@/lib/cms'
+import { DEFAULT_HOME_STATS, HOME } from '@/lib/copy'
 
 function TitleWithAccent({ title, accent }) {
   if (!title) return null
@@ -15,8 +16,9 @@ function TitleWithAccent({ title, accent }) {
   )
 }
 
-const Hero = ({ home, whatsappUrl }) => {
-  const image = mediaUrl(home?.heroImage)
+const Hero = ({ config, whatsappUrl }) => {
+  const image = mediaUrl(config?.heroImage)
+  const stats = config?.stats?.length ? config.stats : DEFAULT_HOME_STATS
 
   return (
     <section className="hero">
@@ -26,17 +28,15 @@ const Hero = ({ home, whatsappUrl }) => {
 
       <div className="hero__inner">
         <div className="hero__content">
-          {home?.heroEyebrow && (
-            <span className="eyebrow eyebrow--on-dark">{home.heroEyebrow}</span>
-          )}
+          {HOME.heroEyebrow && <span className="eyebrow eyebrow--on-dark">{HOME.heroEyebrow}</span>}
           <h1>
-            <TitleWithAccent title={home?.heroTitle} accent={home?.heroAccent} />
+            <TitleWithAccent title={HOME.heroTitle} accent={HOME.heroAccent} />
           </h1>
-          {home?.heroLead && <p className="hero__lead">{home.heroLead}</p>}
+          {HOME.heroLead && <p className="hero__lead">{HOME.heroLead}</p>}
 
           <div className="hero__actions">
             <Link href="/produtos" className="button button--invert">
-              {home?.heroPrimaryLabel || 'Ver catálogo completo'}
+              {HOME.heroPrimaryLabel}
             </Link>
             <a
               href={whatsappUrl}
@@ -44,13 +44,13 @@ const Hero = ({ home, whatsappUrl }) => {
               rel="noopener noreferrer"
               className="button button--outline-light"
             >
-              {home?.heroSecondaryLabel || 'Solicitar orçamento'}
+              {HOME.heroSecondaryLabel}
             </a>
           </div>
         </div>
 
         <dl className="hero__stats">
-          {(home?.stats || []).map((stat) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="hero__stat">
               <dt>{stat.value}</dt>
               <dd>{stat.label}</dd>

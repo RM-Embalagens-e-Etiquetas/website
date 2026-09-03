@@ -5,29 +5,22 @@ import Differentiators from '@/components/home/Differentiators'
 import CatalogPreview from '@/components/home/CatalogPreview'
 import AboutTeaser from '@/components/home/AboutTeaser'
 import ContactCta from '@/components/ContactCta'
+import { DEFAULT_HOME_SECTIONS } from '@/lib/copy'
 import {
   categoryCover,
-  getHome,
+  getCompany,
+  getHomeConfig,
   getProductCategories,
   getProductGroups,
-  getSite,
   mediaUrl,
+  resolveFeaturedGroups,
+  resolveHomeSections,
+  resolveMarqueeTitles,
   whatsappUrl,
 } from '@/lib/cms'
 
-export default async function HomePage() {
-  const [home, site, groups, categories] = await Promise.all([
-    getHome(),
-    getSite(),
-    getProductGroups(),
-    getProductCategories(),
-  ])
-
-  const waUrl = whatsappUrl(site.whatsapp)
-  const marqueeTitles = categories.map((category) => category.title)
-  const proofImages = (home.proofImages || []).map(mediaUrl).filter(Boolean)
-
-  const previewGroups = groups.map((group) => {
+function buildPreviewGroups(groups, categories) {
+  return groups.map((group) => {
     const groupCategories = categories.filter((category) => {
       const related = category.group
       const groupId = typeof related === 'object' ? related.id : related
@@ -39,16 +32,49 @@ export default async function HomePage() {
       cover: categoryCover(groupCategories[0]),
     }
   })
+}
+
+const SECTION_RENDERERS = {
+  marquee: ({ homeConfig, categories }) => (
+    <Marquee titles={resolveMarqueeTitles(homeConfig, categories)} />
+  ),
+  proof: ({ homeConfig }) => (
+    <ProofStrip
+      label={homeConfig.proofLabel}
+      images={(homeConfig.proofImages || []).map(mediaUrl).filter(Boolean)}
+    />
+  ),
+  differentiators: ({ homeConfig }) => <Differentiators config={homeConfig} />,
+  catalog: ({ previewGroups }) => <CatalogPreview groups={previewGroups} />,
+  'about-teaser': ({ homeConfig }) => <AboutTeaser config={homeConfig} />,
+  'contact-cta': ({ homeConfig, company, waUrl }) => (
+    <ContactCta config={homeConfig} company={company} whatsappUrl={waUrl} />
+  ),
+}
+
+export default async function HomePage() {
+  const [homeConfig, company, groups, categories] = await Promise.all([
+    getHomeConfig(),
+    getCompany(),
+    getProductGroups(),
+    getProductCategories(),
+  ])
+
+  const waUrl = whatsappUrl(company.whatsapp)
+  const sections = resolveHomeSections(homeConfig) || DEFAULT_HOME_SECTIONS
+  const featuredGroups = resolveFeaturedGroups(homeConfig, groups)
+  const previewGroups = buildPreviewGroups(featuredGroups, categories)
+
+  const context = { homeConfig, company, categories, previewGroups, waUrl }
 
   return (
     <>
-      <Hero home={home} whatsappUrl={waUrl} />
-      <Marquee titles={marqueeTitles} />
-      <ProofStrip label={home.proofLabel} images={proofImages} />
-      <Differentiators home={home} />
-      <CatalogPreview home={home} groups={previewGroups} />
-      <AboutTeaser home={home} />
-      <ContactCta home={home} site={site} whatsappUrl={waUrl} />
+      <Hero config={homeConfig} whatsappUrl={waUrl} />
+      {sections.map((item) => {
+        const render = SECTION_RENDERERS[item.section]
+        if (!render) return null
+        return <div key={item.section}>{render(context)}</div>
+      })}
     </>
   )
 }

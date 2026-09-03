@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ProductGallery from '@/components/products/ProductGallery'
-import { copy } from '@/lib/copy'
+import { COPY } from '@/lib/copy'
 import {
   categoryCover,
   galleryImages,
   getCategoriesByGroupId,
   getCategoryBySlug,
-  getSite,
+  getCompany,
   whatsappUrl,
 } from '@/lib/cms'
 
@@ -24,21 +24,21 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductCategoryPage({ params }) {
   const { slug } = await params
-  const [category, site] = await Promise.all([getCategoryBySlug(slug), getSite()])
+  const [category, company] = await Promise.all([getCategoryBySlug(slug), getCompany()])
   if (!category) notFound()
 
   const images = galleryImages(category)
   const group = typeof category.group === 'object' ? category.group : null
   const relatedDocs = group ? await getCategoriesByGroupId(group.id) : []
   const related = relatedDocs.filter((item) => item.slug !== category.slug)
-  const waUrl = whatsappUrl(site.whatsapp)
+  const waUrl = whatsappUrl(company.whatsapp)
 
   return (
     <>
       <section className="page-header">
         <div className="section-inner">
           <div className="breadcrumb">
-            <Link href="/produtos">{copy(site, 'navProducts')}</Link>
+            <Link href="/produtos">{COPY.navProducts}</Link>
             <span>/</span>
             <span>{group?.title}</span>
             <span>/</span>
@@ -50,10 +50,10 @@ export default async function ProductCategoryPage({ params }) {
 
           <div className="page-header__actions">
             <a href={waUrl} target="_blank" rel="noopener noreferrer" className="button button--primary">
-              {copy(site, 'productOrder')}
+              {COPY.productOrder}
             </a>
             <Link href="/produtos" className="button button--ghost">
-              {copy(site, 'productBack')}
+              {COPY.productBack}
             </Link>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default async function ProductCategoryPage({ params }) {
           {images.length > 0 ? (
             <ProductGallery images={images} />
           ) : (
-            <p>{copy(site, 'galleryEmpty')}</p>
+            <p>{COPY.galleryEmpty}</p>
           )}
         </div>
       </section>
@@ -74,7 +74,7 @@ export default async function ProductCategoryPage({ params }) {
           <div className="section-inner">
             <div className="section-heading section-heading--left">
               <h2>
-                {copy(site, 'relatedPrefix')} {group?.title}
+                {COPY.relatedPrefix} {group?.title}
               </h2>
             </div>
             <div className="related-categories__grid">

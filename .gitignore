@@ -29,6 +29,7 @@ out
 payload.sqlite
 payload.sqlite-*
 *.sqlite
+.dev
 media
 src/payload-types.ts
 .env*

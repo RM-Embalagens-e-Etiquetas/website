@@ -4,45 +4,35 @@ import { usePathname } from 'next/navigation'
 
 const GUIDES = [
   {
-    test: (pathname: string) => pathname.startsWith('/admin/globals/home'),
-    title: 'Página inicial',
-    text: 'Aqui você muda o banner, as fotos, os textos e os botões da primeira página do site.',
+    test: (pathname: string) => pathname.startsWith('/admin/globals/company'),
+    title: 'Dados da empresa',
+    text: 'Logo, telefone, WhatsApp, Instagram, endereço e texto do rodapé.',
   },
   {
-    test: (pathname: string) => pathname.startsWith('/admin/globals/about'),
-    title: 'Sobre a empresa',
-    text: 'História, foto e valores da página Sobre.',
-  },
-  {
-    test: (pathname: string) => pathname.startsWith('/admin/globals/contact'),
-    title: 'Contato',
-    text: 'Textos da página Contato. Telefone e Instagram ficam em Logo, menu e WhatsApp.',
-  },
-  {
-    test: (pathname: string) => pathname.startsWith('/admin/globals/site'),
-    title: 'Logo, menu e WhatsApp',
-    text: 'Logo, nome, menu, WhatsApp, Instagram, endereço, rodapé e botões que aparecem no site inteiro.',
+    test: (pathname: string) => pathname.startsWith('/admin/globals/home-config'),
+    title: 'Configuração da home',
+    text: 'Quais seções aparecem, fotos, destaques, diferenciais e mensagem de contato.',
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-groups'),
     title: 'Linha do catálogo',
-    text: 'Aqui você muda o nome e o texto desta linha na página Produtos. As fotos ficam em cada produto, no menu Catálogo.',
+    text: 'Nome e descrição desta linha de produtos. As fotos ficam em cada produto.',
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-categories/create'),
     title: 'Novo produto',
-    text: 'Coloque as fotos, o nome, o texto e escolha a linha (Sacolas, Etiquetas, Tags ou Embalagens). A primeira foto vira a capa.',
+    text: 'Fotos, nome, descrição e linha (Sacolas, Etiquetas, Tags ou Embalagens). A primeira foto vira a capa.',
   },
   {
     test: (pathname: string) => pathname === '/admin/collections/product-categories',
     title: 'Catálogo',
-    text: 'Os produtos ficam dentro das linhas, como no site. Clique na foto para editar. O título da seção muda em “Nome e texto da linha”.',
+    text: 'Produtos organizados por linha. Clique para editar fotos, nome e descrição.',
     save: false,
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-categories/'),
     title: 'Produto',
-    text: 'Troque as fotos, o nome e o texto deste produto. A primeira foto é a capa no site.',
+    text: 'Fotos, nome e descrição deste produto. A primeira foto é a capa no site.',
   },
 ]
 

@@ -14,8 +14,8 @@ export function mediaUrl(doc) {
   return doc.url || null
 }
 
-export function logoUrl(site) {
-  return mediaUrl(site?.logo) || '/logo.png'
+export function logoUrl(company) {
+  return mediaUrl(company?.logo) || '/logo.png'
 }
 
 export function whatsappUrl(digits) {
@@ -23,24 +23,19 @@ export function whatsappUrl(digits) {
   return `https://wa.me/${clean || '5521964282763'}`
 }
 
+export async function getCompany() {
+  const payload = await getCms()
+  return payload.findGlobal({ slug: 'company', depth: 1 })
+}
+
+export async function getHomeConfig() {
+  const payload = await getCms()
+  return payload.findGlobal({ slug: 'home-config', depth: 2 })
+}
+
+/** @deprecated use getCompany */
 export async function getSite() {
-  const payload = await getCms()
-  return payload.findGlobal({ slug: 'site', depth: 1 })
-}
-
-export async function getHome() {
-  const payload = await getCms()
-  return payload.findGlobal({ slug: 'home', depth: 2 })
-}
-
-export async function getAbout() {
-  const payload = await getCms()
-  return payload.findGlobal({ slug: 'about', depth: 1 })
-}
-
-export async function getContact() {
-  const payload = await getCms()
-  return payload.findGlobal({ slug: 'contact', depth: 1 })
+  return getCompany()
 }
 
 export async function getProductGroups() {
@@ -105,4 +100,30 @@ export function galleryImages(category) {
       }
     })
     .filter(Boolean)
+}
+
+export function resolveHomeSections(homeConfig) {
+  const sections = homeConfig?.sections
+  if (Array.isArray(sections) && sections.length > 0) {
+    return sections.filter((item) => item?.enabled !== false && item?.section)
+  }
+  return null
+}
+
+export function resolveFeaturedGroups(homeConfig, allGroups) {
+  const featured = homeConfig?.featuredGroups
+  if (!Array.isArray(featured) || featured.length === 0) return allGroups
+
+  const order = featured.map((group) => (typeof group === 'object' ? group.id : group))
+  return order
+    .map((id) => allGroups.find((group) => group.id === id))
+    .filter(Boolean)
+}
+
+export function resolveMarqueeTitles(homeConfig, categories) {
+  const selected = homeConfig?.marqueeCategories
+  if (Array.isArray(selected) && selected.length > 0) {
+    return selected.map((category) => (typeof category === 'object' ? category.title : null)).filter(Boolean)
+  }
+  return categories.map((category) => category.title)
 }

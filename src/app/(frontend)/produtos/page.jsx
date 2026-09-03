@@ -1,33 +1,24 @@
 import CategoryCard from '@/components/products/CategoryCard'
-import { categoryCover, getProductCategories, getProductGroups, getSite } from '@/lib/cms'
+import { PAGES, SEO } from '@/lib/copy'
+import { categoryCover, getProductCategories, getProductGroups } from '@/lib/cms'
 
 export async function generateMetadata() {
-  const site = await getSite()
   return {
-    title: site.catalogSeoTitle || 'Produtos | RM Embalagens',
-    description:
-      site.catalogSeoDescription ||
-      'Catálogo completo de sacolas, etiquetas, tags e acabamentos personalizados da RM Embalagens.',
+    title: SEO.catalogTitle,
+    description: SEO.catalogDescription,
   }
 }
 
 export default async function ProdutosPage() {
-  const [site, groups, categories] = await Promise.all([
-    getSite(),
-    getProductGroups(),
-    getProductCategories(),
-  ])
+  const [groups, categories] = await Promise.all([getProductGroups(), getProductCategories()])
 
   return (
     <>
       <section className="page-header">
         <div className="section-inner">
-          <span className="eyebrow">{site.catalogPageEyebrow || 'Catálogo'}</span>
-          <h1>{site.catalogPageTitle || 'Nossos produtos'}</h1>
-          <p>
-            {site.catalogPageLead ||
-              'Explore nossas linhas de produção por categoria. Cada item pode ser personalizado com as cores, materiais e a arte da sua marca.'}
-          </p>
+          <span className="eyebrow">{PAGES.catalog.eyebrow}</span>
+          <h1>{PAGES.catalog.title}</h1>
+          <p>{PAGES.catalog.lead}</p>
         </div>
       </section>
 

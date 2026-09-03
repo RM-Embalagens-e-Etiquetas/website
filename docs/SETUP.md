@@ -31,8 +31,14 @@ Confirme que existem (Production + Preview):
 - `BLOB_READ_WRITE_TOKEN` (do Blob **Public** novo)
 - `NEXT_PUBLIC_SERVER_URL` = `https://rm-embalagens.vercel.app`
 
-### 5. GitHub — popular fotos no Blob novo
-**Actions** → **Sync CMS** → modo **force** → Run
+### 5. Popular banco (primeira vez ou após migration)
+Local ou CI com env de produção:
+
+```bash
+npm run seed
+```
+
+Isso cria catálogo, globals `company` e `home-config`, e envia fotos pro Blob.
 
 ### 6. Deploy
 Push no `main` ou **Deployments** → **Redeploy** → confira o site.
@@ -43,9 +49,9 @@ Push no `main` ou **Deployments** → **Redeploy** → confira o site.
 
 | Ação | Como |
 |---|---|
-| Editar textos/fotos | Funcionária no `/admin` |
-| Mudar código | Push no `main` → Vercel deploya |
-| Conteúdo em lote do repo | Actions → Sync CMS → `safe` |
+| Editar catálogo, fotos, contatos, home | Funcionária no `/admin` |
+| Mudar menu, títulos, estrutura | Push no `main` → Vercel deploya |
+| Reset total do catálogo | `npm run seed` |
 
 ## Local
 

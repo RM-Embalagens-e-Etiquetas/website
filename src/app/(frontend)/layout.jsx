@@ -1,7 +1,8 @@
 import { Jost } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getProductGroups, getSite, logoUrl, whatsappUrl } from '@/lib/cms'
+import { SEO } from '@/lib/copy'
+import { getCompany, getProductGroups, logoUrl, whatsappUrl } from '@/lib/cms'
 import '../globals.css'
 
 const jost = Jost({
@@ -13,17 +14,13 @@ const jost = Jost({
 export const revalidate = 3600
 
 export async function generateMetadata() {
-  const site = await getSite()
-
   return {
     title: {
-      default: site.defaultTitle || 'RM Embalagens — Embalagens e Etiquetas Personalizadas',
+      default: SEO.defaultTitle,
       template: '%s',
     },
-    description:
-      site.defaultDescription ||
-      'Fabricante e distribuidora de sacolas, etiquetas, tags e acabamentos personalizados para marcas em todo o Brasil.',
-    keywords: site.keywords || undefined,
+    description: SEO.defaultDescription,
+    keywords: SEO.keywords,
     icons: {
       icon: '/logo.png',
     },
@@ -31,9 +28,9 @@ export async function generateMetadata() {
 }
 
 export default async function FrontendLayout({ children }) {
-  const [site, groups] = await Promise.all([getSite(), getProductGroups()])
-  const waUrl = whatsappUrl(site.whatsapp)
-  const logoSrc = logoUrl(site)
+  const [company, groups] = await Promise.all([getCompany(), getProductGroups()])
+  const waUrl = whatsappUrl(company.whatsapp)
+  const logoSrc = logoUrl(company)
 
   return (
     <html lang="pt-BR" className={jost.variable}>
@@ -41,9 +38,9 @@ export default async function FrontendLayout({ children }) {
         <link rel="stylesheet" href="/fontawesome/css/all.css" />
       </head>
       <body>
-        <Header site={site} logoSrc={logoSrc} whatsappUrl={waUrl} />
+        <Header company={company} logoSrc={logoSrc} whatsappUrl={waUrl} />
         <main>{children}</main>
-        <Footer site={site} logoSrc={logoSrc} groups={groups} whatsappUrl={waUrl} />
+        <Footer company={company} logoSrc={logoSrc} groups={groups} whatsappUrl={waUrl} />
       </body>
     </html>
   )

@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { mediaUrl } from '@/lib/cms'
+import { DEFAULT_HOME_ABOUT_TEXT, HOME } from '@/lib/copy'
 
-const AboutTeaser = ({ home }) => {
-  const image = mediaUrl(home?.aboutImage)
+const AboutTeaser = ({ config }) => {
+  const image = mediaUrl(config?.aboutImage)
+  const text = config?.aboutText || DEFAULT_HOME_ABOUT_TEXT
 
   return (
     <section className="about-teaser">
@@ -12,11 +14,11 @@ const AboutTeaser = ({ home }) => {
         </div>
 
         <div className="about-teaser__content">
-          {home?.aboutEyebrow && <span className="eyebrow">{home.aboutEyebrow}</span>}
-          <h2>{home?.aboutTitle}</h2>
-          <p>{home?.aboutText}</p>
+          {HOME.aboutEyebrow && <span className="eyebrow">{HOME.aboutEyebrow}</span>}
+          <h2>{HOME.aboutTitle}</h2>
+          <p>{text}</p>
           <Link href="/sobre" className="link-arrow">
-            {home?.aboutLinkLabel || 'Conheça nossa história'}{' '}
+            {HOME.aboutLinkLabel}{' '}
             <i className="fal fa-arrow-right" aria-hidden="true"></i>
           </Link>
         </div>

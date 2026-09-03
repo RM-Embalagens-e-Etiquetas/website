@@ -13,10 +13,8 @@ import { Media } from './collections/Media'
 import { ProductCategories } from './collections/ProductCategories'
 import { ProductGroups } from './collections/ProductGroups'
 import { Users } from './collections/Users'
-import { About } from './globals/About'
-import { Contact } from './globals/Contact'
-import { Home } from './globals/Home'
-import { Site } from './globals/Site'
+import { Company } from './globals/Company'
+import { HomeConfig } from './globals/HomeConfig'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
@@ -24,10 +22,25 @@ const dirname = path.dirname(filename)
 
 dotenv.config()
 
+function sqliteDatabaseUrl() {
+  const raw = process.env.DATABASE_URI || 'file:./payload.sqlite'
+  if (!raw.startsWith('file:')) return raw
+  const filePath = raw.slice('file:'.length)
+  const absolute = path.isAbsolute(filePath) ? filePath : path.resolve(process.cwd(), filePath)
+  return `file:${absolute}`
+}
+
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
-const usePostgres = Boolean(postgresUrl)
+const onVercelRuntime = Boolean(process.env.VERCEL_ENV)
+const localDevScript = process.argv.some(
+  (arg) => arg.includes('dev-prep') || arg.includes('e2e-local') || arg.endsWith('seed.ts'),
+)
+const preferLocalSqlite =
+  localDevScript ||
+  (!onVercelRuntime && process.env.NODE_ENV !== 'production' && process.env.RM_USE_POSTGRES_LOCAL !== '1')
+const usePostgres = Boolean(postgresUrl) && !preferLocalSqlite
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-const onVercel = Boolean(process.env.VERCEL)
+const onVercel = onVercelRuntime
 
 if (usePostgres && onVercel && !blobToken) {
   console.warn(
@@ -46,7 +59,7 @@ const db = usePostgres
     })
   : sqliteAdapter({
       client: {
-        url: process.env.DATABASE_URI || 'file:./payload.sqlite',
+        url: sqliteDatabaseUrl(),
       },
     })
 
@@ -114,7 +127,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, ProductGroups, ProductCategories],
-  globals: [Site, Home, About, Contact],
+  globals: [Company, HomeConfig],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET,
   typescript: {

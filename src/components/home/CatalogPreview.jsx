@@ -1,13 +1,14 @@
 import Link from 'next/link'
+import { HOME } from '@/lib/copy'
 
-const CatalogPreview = ({ home, groups }) => {
+const CatalogPreview = ({ groups }) => {
   return (
     <section className="catalog-preview">
       <div className="section-inner">
         <div className="section-heading">
-          {home?.catalogEyebrow && <span className="eyebrow">{home.catalogEyebrow}</span>}
-          <h2>{home?.catalogTitle}</h2>
-          {home?.catalogLead && <p>{home.catalogLead}</p>}
+          {HOME.catalogEyebrow && <span className="eyebrow">{HOME.catalogEyebrow}</span>}
+          <h2>{HOME.catalogTitle}</h2>
+          {HOME.catalogLead && <p>{HOME.catalogLead}</p>}
         </div>
 
         <div className="catalog-preview__grid">
@@ -33,7 +34,7 @@ const CatalogPreview = ({ home, groups }) => {
 
         <div className="catalog-preview__footer">
           <Link href="/produtos" className="button button--primary">
-            {home?.catalogButtonLabel || 'Explorar catálogo completo'}
+            {HOME.catalogButtonLabel}
           </Link>
         </div>
       </div>

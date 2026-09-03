@@ -7,30 +7,6 @@ function mediaSrc(doc) {
   return doc.url || null
 }
 
-const PAGES = [
-  {
-    href: '/admin/globals/home',
-    title: 'Início',
-    hint: 'Banner, fotos e textos da primeira página',
-    imageFrom: 'home',
-    icon: 'home',
-  },
-  {
-    href: '/admin/globals/about',
-    title: 'Sobre',
-    hint: 'História, foto e valores',
-    imageFrom: 'about',
-    icon: 'about',
-  },
-  {
-    href: '/admin/globals/contact',
-    title: 'Contato',
-    hint: 'Textos e passos para pedir orçamento',
-    icon: 'contact',
-    tone: 'contact',
-  },
-]
-
 const LINE_ICON = {
   sacolas: 'bag',
   etiquetas: 'tag',
@@ -40,9 +16,8 @@ const LINE_ICON = {
 
 export default async function Dashboard() {
   const payload = await getPayload({ config: configPromise })
-  const [home, about, categories, groups] = await Promise.all([
-    payload.findGlobal({ slug: 'home', depth: 1 }),
-    payload.findGlobal({ slug: 'about', depth: 1 }),
+  const [homeConfig, categories, groups] = await Promise.all([
+    payload.findGlobal({ slug: 'home-config', depth: 1 }),
     payload.find({
       collection: 'product-categories',
       depth: 1,
@@ -57,19 +32,16 @@ export default async function Dashboard() {
     }),
   ])
 
-  const pageImages = {
-    home: mediaSrc(home.heroImage),
-    about: mediaSrc(about.image) || mediaSrc(home.aboutImage),
-  }
+  const heroImage = mediaSrc(homeConfig.heroImage)
 
   return (
     <div className="rm-board">
       <header className="rm-board__intro">
         <p className="rm-board__eyebrow">Painel da RM Embalagens</p>
-        <h1>O que você quer alterar no site?</h1>
+        <h1>Catálogo e dados da empresa</h1>
         <p>
-          O menu da esquerda segue o site: empresa, páginas e catálogo por linha. Clique, troque e
-          aperte <strong>Salvar</strong>.
+          Aqui você gerencia produtos, fotos, contatos e o que aparece na home. Textos do site (menu,
+          títulos das páginas) são definidos pelo desenvolvedor.
         </p>
       </header>
 
@@ -85,7 +57,7 @@ export default async function Dashboard() {
           <span>2</span>
           <div>
             <strong>Altere</strong>
-            <em>Troque foto, nome, texto ou botão</em>
+            <em>Troque foto, nome, texto ou destaque</em>
           </div>
         </li>
         <li>
@@ -98,44 +70,32 @@ export default async function Dashboard() {
       </ol>
 
       <section className="rm-board__section">
-        <h2>Empresa</h2>
-        <p className="rm-board__hint">Aparece no site inteiro: logo, menu, WhatsApp e rodapé.</p>
+        <h2>Empresa e home</h2>
+        <p className="rm-board__hint">Contatos, logo, seções da home e destaques.</p>
         <div className="rm-board__grid rm-board__grid--pages">
-          <a className="rm-card" href="/admin/globals/site">
+          <a className="rm-card" href="/admin/globals/company">
             <div className="rm-card__media rm-card__media--plain rm-card__media--phone">
               <Icon name="brand" />
             </div>
             <div className="rm-card__body">
-              <strong>Logo, menu e WhatsApp</strong>
-              <span>Logo, telefone, Instagram, endereço e botões</span>
+              <strong>Dados da empresa</strong>
+              <span>Logo, telefone, WhatsApp, Instagram e endereço</span>
             </div>
           </a>
-        </div>
-      </section>
-
-      <section className="rm-board__section">
-        <h2>Páginas do site</h2>
-        <p className="rm-board__hint">O que o cliente vê em Início, Sobre e Contato.</p>
-        <div className="rm-board__grid rm-board__grid--pages">
-          {PAGES.map((page) => {
-            const image = page.imageFrom ? pageImages[page.imageFrom] : null
-            return (
-              <a key={page.href} className="rm-card" href={page.href}>
-                <div
-                  className={`rm-card__media ${image ? '' : `rm-card__media--plain rm-card__media--${page.tone || 'plain'}`}`}
-                >
-                  {image ? <img src={image} alt="" /> : <Icon name={page.icon} />}
-                  <span className="rm-card__badge">
-                    <Icon name={page.icon} />
-                  </span>
-                </div>
-                <div className="rm-card__body">
-                  <strong>{page.title}</strong>
-                  <span>{page.hint}</span>
-                </div>
-              </a>
-            )
-          })}
+          <a className="rm-card" href="/admin/globals/home-config">
+            <div
+              className={`rm-card__media ${heroImage ? '' : 'rm-card__media--plain rm-card__media--plain'}`}
+            >
+              {heroImage ? <img src={heroImage} alt="" /> : <Icon name="home" />}
+              <span className="rm-card__badge">
+                <Icon name="home" />
+              </span>
+            </div>
+            <div className="rm-card__body">
+              <strong>Configuração da home</strong>
+              <span>Seções, fotos, diferenciais e destaques</span>
+            </div>
+          </a>
         </div>
       </section>
 
@@ -143,9 +103,7 @@ export default async function Dashboard() {
         <div className="rm-board__section-head">
           <div>
             <h2>Catálogo</h2>
-            <p className="rm-board__hint">
-              Igual ao site: 4 linhas, e dentro de cada uma os produtos com foto.
-            </p>
+            <p className="rm-board__hint">Linhas de produtos e categorias com fotos.</p>
           </div>
           <a className="rm-board__add" href="/admin/collections/product-categories/create">
             <Icon name="plus" />

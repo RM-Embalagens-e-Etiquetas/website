@@ -2,30 +2,57 @@
 
 ## Quem edita o quê
 
-| Pessoa | Onde | Quando |
+| Camada | Onde | O quê |
 |---|---|---|
-| Funcionária | `/admin` | Textos, fotos, produtos no dia a dia |
-| Dev | `src/content/` no repo | Conteúdo em lote, novos produtos |
+| Funcionária | `/admin` | Catálogo, fotos, dados da empresa, config da home |
+| Desenvolvedor | Código (`src/lib/copy.js`, componentes) | Estrutura do site, menu, títulos, SEO, layout |
 
-## Arquivos de conteúdo
+## Dev local (automático)
 
-```
-src/content/
-  groups.json
-  categories.json
-  globals/site.json, home.json, about.json, contact.json
-  media.json
-public/products/{slug}/   ← fotos dos produtos
+```bash
+npm run dev        # prep + seed se necessário + sobe em :3000
+npm run verify     # E2E local completo (porta 3099)
+npm run dev:reset  # recria SQLite + catálogo do zero
 ```
 
-## Sincronizar repo → produção
+- **SQLite local** — ignora `POSTGRES_URL` do `.env.local` (Vercel) por padrão
+- **Sem prompts** — schema antigo é detectado e o banco é recriado sozinho
+- **Fotos no admin** — uploads vão para `media/` em dev (funcionária testa upload local)
 
-GitHub → **Actions** → **Sync CMS** → escolha o modo:
+Para apontar dev ao Neon (não recomendado): `RM_USE_POSTGRES_LOCAL=1`
 
-| Modo | Uso |
+## CMS (Payload)
+
+```
+Globals
+  company       → logo, telefone, WhatsApp, Instagram, endereço, rodapé
+  home-config   → seções on/off, ordem, destaques, fotos, diferenciais
+
+Collections
+  product-groups      → linhas (Sacolas, Etiquetas…)
+  product-categories  → produtos + galeria
+  media               → fotos
+  users               → login
+```
+
+## Código (não vai pro admin)
+
+```
+src/lib/copy.js   → textos do site (menu, títulos, páginas Sobre/Contato, SEO)
+```
+
+## Bootstrap inicial (produção)
+
+```bash
+npm run seed
+```
+
+Requer `POSTGRES_URL` + `BLOB_READ_WRITE_TOKEN`.
+
+## Dia a dia
+
+| Ação | Como |
 |---|---|
-| `safe` | Padrão — não apaga edições da funcionária |
-| `force` | Primeira vez ou reset total |
-| `media` | Só reenvia fotos pro Blob |
-
-Secrets: `PAYLOAD_SECRET`, `POSTGRES_URL`, `BLOB_READ_WRITE_TOKEN`
+| Editar produtos/fotos/contatos | Funcionária no `/admin` |
+| Mudar estrutura do site | Push no `main` → Vercel deploya |
+| Validar antes de push | `npm run verify` |

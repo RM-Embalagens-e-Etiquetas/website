@@ -1,20 +1,20 @@
 import Link from 'next/link'
-import { copy, copyright } from '@/lib/copy'
+import { brandName, copyright, COPY } from '@/lib/copy'
 
-const Footer = ({ site, logoSrc, groups, whatsappUrl }) => {
+const Footer = ({ company, logoSrc, groups, whatsappUrl }) => {
   const year = new Date().getFullYear()
-  const brand = copy(site, 'brandName')
+  const brand = brandName(company)
 
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
         <div className="site-footer__brand">
           <img src={logoSrc} alt={brand} className="logo" />
-          <p>{site?.footerBlurb}</p>
+          <p>{company?.footerBlurb}</p>
         </div>
 
         <div className="site-footer__column">
-          <h3>{copy(site, 'footerProducts')}</h3>
+          <h3>{COPY.footerProducts}</h3>
           <ul>
             {(groups || []).map((group) => (
               <li key={group.slug}>
@@ -25,18 +25,18 @@ const Footer = ({ site, logoSrc, groups, whatsappUrl }) => {
         </div>
 
         <div className="site-footer__column">
-          <h3>{copy(site, 'footerInstitutional')}</h3>
+          <h3>{COPY.footerInstitutional}</h3>
           <ul>
             <li>
-              <Link href="/sobre">{copy(site, 'footerAbout')}</Link>
+              <Link href="/sobre">{COPY.footerAbout}</Link>
             </li>
             <li>
-              <Link href="/contato">{copy(site, 'footerContactLink')}</Link>
+              <Link href="/contato">{COPY.footerContactLink}</Link>
             </li>
-            {site?.instagramUrl && (
+            {company?.instagramUrl && (
               <li>
-                <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
-                  {copy(site, 'footerInstagram')}
+                <a href={company.instagramUrl} target="_blank" rel="noopener noreferrer">
+                  {COPY.footerInstagram}
                 </a>
               </li>
             )}
@@ -44,20 +44,20 @@ const Footer = ({ site, logoSrc, groups, whatsappUrl }) => {
         </div>
 
         <div className="site-footer__column">
-          <h3>{copy(site, 'footerContact')}</h3>
+          <h3>{COPY.footerContact}</h3>
           <ul>
             <li>
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                {site?.phone}
+                {company?.phone}
               </a>
             </li>
-            <li className="site-footer__address">{site?.address}</li>
+            <li className="site-footer__address">{company?.address}</li>
           </ul>
         </div>
       </div>
 
       <div className="site-footer__bottom">
-        <span>{copyright(site, year)}</span>
+        <span>{copyright(year)}</span>
       </div>
     </footer>
   )

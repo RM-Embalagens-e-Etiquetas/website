@@ -1,48 +1,42 @@
 import ContactCta from '@/components/ContactCta'
-import { copy } from '@/lib/copy'
-import { getAbout, getHome, getSite, mediaUrl, whatsappUrl } from '@/lib/cms'
+import { ABOUT, COPY, SEO } from '@/lib/copy'
+import { getCompany, getHomeConfig, whatsappUrl } from '@/lib/cms'
 
 export async function generateMetadata() {
-  const about = await getAbout()
   return {
-    title: about.seoTitle || 'Sobre | RM Embalagens',
-    description:
-      about.seoDescription ||
-      'Conheça a RM Embalagens: fabricante e distribuidora de embalagens, etiquetas e acessórios personalizados.',
+    title: SEO.aboutTitle,
+    description: SEO.aboutDescription,
   }
 }
 
 export default async function SobrePage() {
-  const [about, home, site] = await Promise.all([getAbout(), getHome(), getSite()])
-  const image = mediaUrl(about.image)
-  const waUrl = whatsappUrl(site.whatsapp)
+  const [company, homeConfig] = await Promise.all([getCompany(), getHomeConfig()])
+  const waUrl = whatsappUrl(company.whatsapp)
 
   return (
     <>
       <section className="page-header">
         <div className="section-inner">
-          {about.eyebrow && <span className="eyebrow">{about.eyebrow}</span>}
-          <h1>{about.title}</h1>
-          <p>{about.lead}</p>
+          {ABOUT.eyebrow && <span className="eyebrow">{ABOUT.eyebrow}</span>}
+          <h1>{ABOUT.title}</h1>
+          <p>{ABOUT.lead}</p>
         </div>
       </section>
 
       <section className="about-section">
         <div className="section-inner about-section__inner">
-          {image && <img src={image} alt={copy(site, 'brandName')} className="about-section__img" />}
-
           <div className="about-section__content">
-            {about.whoTitle && <h2>{about.whoTitle}</h2>}
-            {about.whoText && <p>{about.whoText}</p>}
-            {about.businessTitle && <h2>{about.businessTitle}</h2>}
-            {about.businessText && <p>{about.businessText}</p>}
-            {about.clientsTitle && <h2>{about.clientsTitle}</h2>}
-            {about.clientsText && (
+            {ABOUT.whoTitle && <h2>{ABOUT.whoTitle}</h2>}
+            {ABOUT.whoText && <p>{ABOUT.whoText}</p>}
+            {ABOUT.businessTitle && <h2>{ABOUT.businessTitle}</h2>}
+            {ABOUT.businessText && <p>{ABOUT.businessText}</p>}
+            {ABOUT.clientsTitle && <h2>{ABOUT.clientsTitle}</h2>}
+            {ABOUT.clientsText && (
               <p>
-                {about.clientsText}{' '}
-                {site.instagramUrl && (
-                  <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
-                    {copy(about, 'instagramCta')}
+                {ABOUT.clientsText}{' '}
+                {company.instagramUrl && (
+                  <a href={company.instagramUrl} target="_blank" rel="noopener noreferrer">
+                    {COPY.instagramCta}
                   </a>
                 )}
               </p>
@@ -54,11 +48,11 @@ export default async function SobrePage() {
       <section className="values-section">
         <div className="section-inner">
           <div className="section-heading">
-            {about.valuesEyebrow && <span className="eyebrow">{about.valuesEyebrow}</span>}
-            <h2>{about.valuesTitle}</h2>
+            {ABOUT.valuesEyebrow && <span className="eyebrow">{ABOUT.valuesEyebrow}</span>}
+            <h2>{ABOUT.valuesTitle}</h2>
           </div>
           <div className="values-grid">
-            {(about.values || []).map((value) => (
+            {ABOUT.values.map((value) => (
               <div key={value.title} className="value-card">
                 <h3>{value.title}</h3>
                 <p>{value.description}</p>
@@ -68,7 +62,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <ContactCta home={home} site={site} whatsappUrl={waUrl} />
+      <ContactCta config={homeConfig} company={company} whatsappUrl={waUrl} />
     </>
   )
 }

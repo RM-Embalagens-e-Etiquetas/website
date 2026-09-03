@@ -3,18 +3,18 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { copy } from '@/lib/copy'
+import { brandName, COPY } from '@/lib/copy'
 
-const Header = ({ site, logoSrc, whatsappUrl }) => {
+const Header = ({ company, logoSrc, whatsappUrl }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
-  const brand = copy(site, 'brandName')
+  const brand = brandName(company)
 
   const nav = [
-    { href: '/', label: copy(site, 'navHome') },
-    { href: '/produtos', label: copy(site, 'navProducts') },
-    { href: '/sobre', label: copy(site, 'navAbout') },
-    { href: '/contato', label: copy(site, 'navContact') },
+    { href: '/', label: COPY.navHome },
+    { href: '/produtos', label: COPY.navProducts },
+    { href: '/sobre', label: COPY.navAbout },
+    { href: '/contato', label: COPY.navContact },
   ]
 
   const closeMenu = () => setMenuOpen(false)
@@ -55,7 +55,7 @@ const Header = ({ site, logoSrc, whatsappUrl }) => {
               className="nav-cta"
               onClick={closeMenu}
             >
-              {copy(site, 'headerCta')}
+              {COPY.headerCta}
             </a>
           </nav>
         </div>
