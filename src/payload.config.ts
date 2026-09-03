@@ -16,6 +16,7 @@ import { Users } from './collections/Users'
 import { Company } from './globals/Company'
 import { HomeConfig } from './globals/HomeConfig'
 import { migrations } from './migrations'
+import { getServerURL } from './lib/server-url'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -81,6 +82,7 @@ const plugins =
     : []
 
 export default buildConfig({
+  serverURL: getServerURL(),
   admin: {
     user: Users.slug,
     importMap: {

@@ -82,8 +82,12 @@ export async function getCategoriesByGroupId(groupId) {
 }
 
 export function categoryCover(category) {
-  const first = category?.gallery?.[0]
-  return mediaUrl(first)
+  const items = category?.gallery || []
+  for (const item of items) {
+    const src = mediaUrl(item)
+    if (src) return src
+  }
+  return null
 }
 
 export function galleryImages(category) {

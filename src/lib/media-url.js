@@ -1,4 +1,4 @@
-/** Map CMS seed filename → static file in public/ (works on Vercel without Blob). */
+/** Map CMS seed filename → static file in public/ (fallback quando Blob ainda não tem o arquivo). */
 export function staticPathFromFilename(filename) {
   if (!filename) return null
 
@@ -12,8 +12,10 @@ export function staticPathFromFilename(filename) {
   if (!match) return null
 
   const slug = match[1]
-  const num = match[2].padStart(2, '0')
+  const index = parseInt(match[2], 10)
   const ext = match[3].toLowerCase()
+  // Registros órfãos no CMS (ex.: etiquetas-adesivas-26) — public/ só tem 01–17
+  const num = index > 20 ? '01' : String(index).padStart(2, '0')
   return `/products/${slug}/${num}.${ext}`
 }
 
@@ -23,11 +25,12 @@ export function mediaUrl(doc) {
   const url = doc.url
   if (typeof url === 'string' && /^https?:\/\//i.test(url)) return url
 
-  // Na Vercel o disco é efêmero: /api/media/file/* 404 se o Blob ainda não tiver o arquivo.
-  // Fotos do catálogo já estão em public/ — usa elas até o seed ir para o Blob.
+  const staticPath = staticPathFromFilename(doc.filename)
+
+  // Blob ainda não populado: servir de public/ na Vercel (disco efêmero no Payload)
   if (process.env.VERCEL_ENV) {
-    return staticPathFromFilename(doc.filename) || url || null
+    return staticPath || url || null
   }
 
-  return url || staticPathFromFilename(doc.filename) || null
+  return url || staticPath || null
 }
