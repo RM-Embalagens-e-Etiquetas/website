@@ -1,11 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import type { Payload } from 'payload'
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
-const root = path.resolve(dirname, '../..')
-const productsDir = path.join(root, 'public/products')
+function projectRoot() {
+  return process.cwd()
+}
 
 function isBlobUrl(url: string | null | undefined) {
   return Boolean(url && url.includes('blob.vercel-storage.com'))
@@ -19,6 +18,8 @@ function mimeFromName(filename: string) {
 }
 
 function resolveSourcePath(filename: string) {
+  const root = projectRoot()
+
   if (filename === 'hero.jpg') return path.join(root, 'public/hero.jpg')
   if (filename === 'sobre-producao.jpg') {
     return path.join(root, 'src/assets/img/inicial/sacolas/IMG-20220726-WA0040.jpg')
@@ -29,7 +30,7 @@ function resolveSourcePath(filename: string) {
 
   const slug = match[1]
   const index = parseInt(match[2], 10)
-  const dir = path.join(productsDir, slug)
+  const dir = path.join(root, 'public/products', slug)
   if (!fs.existsSync(dir)) return null
 
   const files = fs
@@ -43,14 +44,46 @@ function resolveSourcePath(filename: string) {
   return path.join(dir, files[fileIndex])
 }
 
+function resolveStaticUrl(filename: string) {
+  const base = (process.env.NEXT_PUBLIC_SERVER_URL || 'https://rm-embalagens.vercel.app').replace(
+    /\/$/,
+    '',
+  )
+
+  if (filename === 'hero.jpg') return `${base}/hero.jpg`
+  if (filename === 'sobre-producao.jpg') return `${base}/sobre-producao.jpg`
+
+  const match = filename.match(/^(.+)-(\d+)\.(jpe?g|png|webp)$/i)
+  if (!match) return null
+
+  const slug = match[1]
+  const index = parseInt(match[2], 10)
+  const ext = match[3].toLowerCase()
+  const num = index > 20 ? '01' : String(index).padStart(2, '0')
+  return `${base}/products/${slug}/${num}.${ext}`
+}
+
+async function loadSourceBuffer(filename: string) {
+  const source = resolveSourcePath(filename)
+  if (source && fs.existsSync(source)) {
+    return fs.readFileSync(source)
+  }
+
+  const staticUrl = resolveStaticUrl(filename)
+  if (!staticUrl) return null
+
+  const res = await fetch(staticUrl)
+  if (!res.ok) return null
+  return Buffer.from(await res.arrayBuffer())
+}
+
 async function uploadToBlob(
   payload: Payload,
-  absPath: string,
+  buffer: Buffer,
   alt: string,
   filename: string,
   mediaId: number | string,
 ) {
-  const buffer = fs.readFileSync(absPath)
   return payload.update({
     collection: 'media',
     id: mediaId,
@@ -95,14 +128,14 @@ export async function migrateMediaBatch(payload: Payload, limit = 8) {
       continue
     }
 
-    const source = resolveSourcePath(filename)
-    if (!source || !fs.existsSync(source)) {
-      skipped.push(filename)
-      continue
-    }
-
     try {
-      await uploadToBlob(payload, source, doc.alt || filename, filename, doc.id)
+      const buffer = await loadSourceBuffer(filename)
+      if (!buffer) {
+        skipped.push(filename)
+        continue
+      }
+
+      await uploadToBlob(payload, buffer, doc.alt || filename, filename, doc.id)
       migrated.push(filename)
     } catch (error) {
       errors.push({

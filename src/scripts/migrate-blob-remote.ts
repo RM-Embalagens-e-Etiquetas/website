@@ -11,13 +11,23 @@ const base =
   process.env.MIGRATE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'https://rm-embalagens.vercel.app'
 const url = `${base.replace(/\/$/, '')}/api/migrate-blob`
 
-for (const file of ['.env.vercel', '.env.local', '.env']) {
+for (const file of ['.env.local', '.env']) {
   const abs = path.resolve(process.cwd(), file)
-  if (fs.existsSync(abs)) dotenv.config({ path: abs, override: false })
+  if (fs.existsSync(abs)) dotenv.config({ path: abs, override: true })
+}
+
+// .env.vercel vem do `vercel env pull` com placeholders — não sobrescrever secret real
+const vercelEnv = path.resolve(process.cwd(), '.env.vercel')
+if (fs.existsSync(vercelEnv)) {
+  const parsed = dotenv.parse(fs.readFileSync(vercelEnv))
+  for (const [key, value] of Object.entries(parsed)) {
+    if (value.includes('[SENSITIVE]')) continue
+    if (process.env[key] === undefined) process.env[key] = value
+  }
 }
 
 const secret = process.env.PAYLOAD_SECRET
-if (!secret) {
+if (!secret || secret.includes('[SENSITIVE]')) {
   console.error('Defina PAYLOAD_SECRET (ex.: copie de Vercel → Settings → Environment Variables).')
   process.exit(1)
 }
