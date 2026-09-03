@@ -1,11 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { mediaUrl } from '@/lib/media-url'
 import ScrollToLine from './ScrollToLine'
-
-function mediaSrc(doc) {
-  if (!doc || typeof doc !== 'object') return null
-  return doc.url || null
-}
 
 export default async function CategoryGallery() {
   const payload = await getPayload({ config: configPromise })
@@ -49,7 +45,7 @@ export default async function CategoryGallery() {
             </div>
             <div className="rm-gallery">
               {items.map((category) => {
-                const cover = mediaSrc(category.gallery?.[0])
+                const cover = mediaUrl(category.gallery?.[0])
                 return (
                   <a
                     key={category.id}

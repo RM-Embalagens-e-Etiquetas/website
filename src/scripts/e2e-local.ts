@@ -66,6 +66,10 @@ const checks: Check[] = [
       assert(res.ok, `GET / → ${res.status}`)
       assert(html.includes(HOME.heroTitle.slice(0, 40)), 'Home sem título do hero (copy.js)')
       assert(html.includes(COPY.navProducts), 'Home sem menu Produtos (estrutura fixa)')
+      assert(
+        html.includes('/hero.jpg') || html.includes('/api/media/file/hero'),
+        'Home sem foto do hero',
+      )
     },
   },
   {

@@ -1,5 +1,8 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { mediaUrl } from './media-url'
+
+export { mediaUrl, staticPathFromFilename } from './media-url'
 
 let cached = null
 
@@ -7,11 +10,6 @@ export async function getCms() {
   if (cached) return cached
   cached = await getPayload({ config })
   return cached
-}
-
-export function mediaUrl(doc) {
-  if (!doc || typeof doc !== 'object') return null
-  return doc.url || null
 }
 
 export function logoUrl(company) {

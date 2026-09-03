@@ -458,7 +458,7 @@ export function assertProductionEnv() {
   const usePostgres = Boolean(process.env.POSTGRES_URL || process.env.DATABASE_URL)
   if (usePostgres && !process.env.BLOB_READ_WRITE_TOKEN) {
     throw new Error(
-      'POSTGRES_URL definido sem BLOB_READ_WRITE_TOKEN. Configure o Vercel Blob antes de rodar o seed.',
+      'POSTGRES_URL definido sem BLOB_READ_WRITE_TOKEN. Na Vercel: Storage → Blob (Public) → conectar ao projeto (Production + Preview) → Redeploy. Depois rode npm run seed de novo.',
     )
   }
 }

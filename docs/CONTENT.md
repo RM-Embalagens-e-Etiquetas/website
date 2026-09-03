@@ -44,7 +44,7 @@ src/lib/copy.js   → textos do site (menu, títulos, páginas Sobre/Contato, SE
 ## Bootstrap inicial (produção)
 
 ```bash
-npm run seed
+npm run seed:prod
 ```
 
 Requer `POSTGRES_URL` + `BLOB_READ_WRITE_TOKEN`.

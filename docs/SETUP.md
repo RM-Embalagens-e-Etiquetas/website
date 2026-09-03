@@ -32,13 +32,14 @@ Confirme que existem (Production + Preview):
 - `NEXT_PUBLIC_SERVER_URL` = `https://rm-embalagens.vercel.app`
 
 ### 5. Popular banco (primeira vez ou após migration)
-Local ou CI com env de produção:
+
+Na pasta do projeto, com `.env.vercel` (ou `npx vercel env pull .env.vercel`):
 
 ```bash
-npm run seed
+npm run seed:prod
 ```
 
-Isso cria catálogo, globals `company` e `home-config`, e envia fotos pro Blob.
+Isso cria catálogo, globals `company` e `home-config`, e envia fotos pro Blob. Sem `BLOB_READ_WRITE_TOKEN` o seed recusa — o disco da Vercel não guarda arquivo.
 
 ### 6. Deploy
 Push no `main` ou **Deployments** → **Redeploy** → confira o site.
@@ -51,7 +52,7 @@ Push no `main` ou **Deployments** → **Redeploy** → confira o site.
 |---|---|
 | Editar catálogo, fotos, contatos, home | Funcionária no `/admin` |
 | Mudar menu, títulos, estrutura | Push no `main` → Vercel deploya |
-| Reset total do catálogo | `npm run seed` |
+| Reset total do catálogo | `npm run seed:prod` |
 
 ## Local
 

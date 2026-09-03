@@ -1,11 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { mediaUrl } from '@/lib/media-url'
 import { Icon } from './Icon'
-
-function mediaSrc(doc) {
-  if (!doc || typeof doc !== 'object') return null
-  return doc.url || null
-}
 
 const LINE_ICON = {
   sacolas: 'bag',
@@ -32,7 +28,7 @@ export default async function Dashboard() {
     }),
   ])
 
-  const heroImage = mediaSrc(homeConfig.heroImage)
+  const heroImage = mediaUrl(homeConfig.heroImage)
 
   return (
     <div className="rm-board">
@@ -138,7 +134,7 @@ export default async function Dashboard() {
             </div>
             <div className="rm-board__grid rm-board__grid--products">
               {items.map((category) => {
-                const cover = mediaSrc(category.gallery?.[0])
+                const cover = mediaUrl(category.gallery?.[0])
                 return (
                   <a
                     key={category.id}

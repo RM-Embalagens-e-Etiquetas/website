@@ -31,15 +31,18 @@ function sqliteDatabaseUrl() {
 }
 
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
-const onVercelRuntime = Boolean(process.env.VERCEL_ENV)
-const localDevScript = process.argv.some(
-  (arg) => arg.includes('dev-prep') || arg.includes('e2e-local') || arg.endsWith('seed.ts'),
-)
-const preferLocalSqlite =
-  localDevScript ||
-  (!onVercelRuntime && process.env.NODE_ENV !== 'production' && process.env.RM_USE_POSTGRES_LOCAL !== '1')
-const usePostgres = Boolean(postgresUrl) && !preferLocalSqlite
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+const onVercelRuntime = Boolean(process.env.VERCEL_ENV)
+const isSeedScript = process.argv.some((arg) => arg.endsWith('seed.ts'))
+const localDevScript = process.argv.some(
+  (arg) => arg.includes('dev-prep') || arg.includes('e2e-local'),
+)
+// `npm run seed` com POSTGRES_URL + BLOB → produção. Dev/e2e continuam no SQLite.
+const preferLocalSqlite = isSeedScript
+  ? !(postgresUrl && blobToken)
+  : localDevScript ||
+    (!onVercelRuntime && process.env.NODE_ENV !== 'production' && process.env.RM_USE_POSTGRES_LOCAL !== '1')
+const usePostgres = Boolean(postgresUrl) && !preferLocalSqlite
 const onVercel = onVercelRuntime
 
 if (usePostgres && onVercel && !blobToken) {
