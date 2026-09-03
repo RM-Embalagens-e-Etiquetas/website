@@ -76,7 +76,8 @@ const plugins =
           },
           token: blobToken,
           access: 'public',
-          clientUploads: true,
+          // false = seed/API faz upload no servidor pro Blob. true = só browser (admin) — seed não funciona.
+          clientUploads: false,
         }),
       ]
     : []
