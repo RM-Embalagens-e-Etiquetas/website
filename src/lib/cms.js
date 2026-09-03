@@ -2,7 +2,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { mediaUrl } from './media-url'
 
-export { mediaUrl, staticPathFromFilename } from './media-url'
+export { mediaUrl } from './media-url'
 
 let cached = null
 

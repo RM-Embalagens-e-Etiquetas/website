@@ -11,17 +11,18 @@
     "dev:reset": "tsx src/scripts/dev-prep.ts --reset",
     "test:e2e": "tsx src/scripts/e2e-local.ts",
     "verify": "npm run test:e2e",
-    "prebuild": "npm run styles",
+    "prebuild": "npm run styles && npm run generate:importmap",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap",
+    "generate:importmap": "tsx src/scripts/generate-importmap.ts",
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
     "fix:migration": "tsx src/scripts/fix-dev-migration.ts",
     "seed": "tsx src/scripts/seed.ts",
-    "seed:prod": "RM_SEED_PRODUCTION=1 tsx src/scripts/seed.ts"
+    "seed:prod": "RM_SEED_PRODUCTION=1 tsx src/scripts/seed.ts",
+    "migrate:blob:remote": "tsx src/scripts/migrate-blob-remote.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",
