@@ -62,6 +62,11 @@ async function run() {
       break
     }
 
+    if ((json.migrated?.length || 0) === 0 && (json.errors?.length || 0) === 0) {
+      console.error('Nenhum arquivo migrado neste lote — verifique skipped:', json.skipped)
+      break
+    }
+
     await new Promise((r) => setTimeout(r, 1500))
   }
 }

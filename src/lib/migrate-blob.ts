@@ -1,10 +1,7 @@
+import { put } from '@vercel/blob'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { Payload } from 'payload'
-
-function projectRoot() {
-  return process.cwd()
-}
 
 function isBlobUrl(url: string | null | undefined) {
   return Boolean(url && url.includes('blob.vercel-storage.com'))
@@ -18,7 +15,7 @@ function mimeFromName(filename: string) {
 }
 
 function resolveSourcePath(filename: string) {
-  const root = projectRoot()
+  const root = process.cwd()
 
   if (filename === 'hero.jpg') return path.join(root, 'public/hero.jpg')
   if (filename === 'sobre-producao.jpg') {
@@ -84,16 +81,27 @@ async function uploadToBlob(
   filename: string,
   mediaId: number | string,
 ) {
+  const token = process.env.BLOB_READ_WRITE_TOKEN
+  if (!token) throw new Error('BLOB_READ_WRITE_TOKEN missing')
+
+  const blob = await put(`media/${filename}`, buffer, {
+    access: 'public',
+    token,
+    addRandomSuffix: false,
+    contentType: mimeFromName(filename),
+  })
+
   return payload.update({
     collection: 'media',
     id: mediaId,
-    data: { alt },
-    file: {
-      data: buffer,
-      mimetype: mimeFromName(filename),
-      name: filename,
-      size: buffer.length,
+    data: {
+      alt,
+      url: blob.url,
+      filename,
+      mimeType: mimeFromName(filename),
+      filesize: buffer.length,
     },
+    overrideAccess: true,
   })
 }
 
@@ -135,8 +143,9 @@ export async function migrateMediaBatch(payload: Payload, limit = 8) {
         continue
       }
 
-      await uploadToBlob(payload, buffer, doc.alt || filename, filename, doc.id)
-      migrated.push(filename)
+      const updated = await uploadToBlob(payload, buffer, doc.alt || filename, filename, doc.id)
+      if (isBlobUrl(updated.url)) migrated.push(filename)
+      else errors.push({ filename, error: `URL still local: ${updated.url}` })
     } catch (error) {
       errors.push({
         filename,
