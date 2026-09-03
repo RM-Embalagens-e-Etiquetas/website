@@ -17,6 +17,7 @@ import { About } from './globals/About'
 import { Contact } from './globals/Contact'
 import { Home } from './globals/Home'
 import { Site } from './globals/Site'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,6 +33,7 @@ const db = usePostgres
       pool: {
         connectionString: postgresUrl,
       },
+      prodMigrations: migrations,
     })
   : sqliteAdapter({
       client: {
