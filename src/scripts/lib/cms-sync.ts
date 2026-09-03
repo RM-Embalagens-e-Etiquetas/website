@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url'
 import type { Payload } from 'payload'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const contentDir = path.resolve(dirname, '../content')
-const root = path.resolve(dirname, '../..')
+const contentDir = path.resolve(dirname, '../../content')
+const root = path.resolve(dirname, '../../..')
 const productsDir = path.join(root, 'public/products')
 
 export type SyncMode = 'safe' | 'force' | 'media'
