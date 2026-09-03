@@ -161,6 +161,10 @@ function mimeFromName(filename: string) {
   return 'image/jpeg'
 }
 
+function isBlobUrl(url: string | null | undefined) {
+  return Boolean(url && url.includes('blob.vercel-storage.com'))
+}
+
 async function findBySlug(payload, collection: string, slug: string) {
   const result = await payload.find({
     collection,
@@ -178,18 +182,30 @@ async function uploadFile(payload, absPath: string, alt: string, filename: strin
     limit: 1,
     depth: 0,
   })
-  if (existing.docs[0]) return existing.docs[0]
 
   const buffer = fs.readFileSync(absPath)
+  const file = {
+    data: buffer,
+    mimetype: mimeFromName(filename),
+    name: filename,
+    size: buffer.length,
+  }
+
+  const doc = existing.docs[0]
+  if (doc) {
+    if (isBlobUrl(doc.url)) return doc
+    return payload.update({
+      collection: 'media',
+      id: doc.id,
+      data: { alt },
+      file,
+    })
+  }
+
   return payload.create({
     collection: 'media',
     data: { alt },
-    file: {
-      data: buffer,
-      mimetype: mimeFromName(filename),
-      name: filename,
-      size: buffer.length,
-    },
+    file,
   })
 }
 
@@ -204,6 +220,15 @@ async function listProductImages(slug: string) {
 }
 
 async function seed() {
+  const usePostgres = Boolean(process.env.POSTGRES_URL || process.env.DATABASE_URL)
+  if (usePostgres && !process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error(
+      'POSTGRES_URL definido sem BLOB_READ_WRITE_TOKEN.\n' +
+        'Em produção as fotos vão para o Vercel Blob — configure o token antes de rodar o seed.',
+    )
+    process.exit(1)
+  }
+
   const payload = await getPayload({ config })
 
   const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@rmembalagens.local'

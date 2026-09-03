@@ -1,8 +1,12 @@
 import type { CollectionConfig } from 'payload'
+import dotenv from 'dotenv'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+dotenv.config()
+
 const dirname = path.dirname(fileURLToPath(import.meta.url))
+const usePostgres = Boolean(process.env.POSTGRES_URL || process.env.DATABASE_URL)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -29,7 +33,8 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    staticDir: path.resolve(dirname, '../../media'),
     displayPreview: true,
+    // Disco local só em dev (SQLite). Em produção o plugin Vercel Blob assume o storage.
+    ...(usePostgres ? {} : { staticDir: path.resolve(dirname, '../../media') }),
   },
 }
