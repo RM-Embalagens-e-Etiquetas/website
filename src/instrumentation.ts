@@ -1,7 +1,6 @@
 export async function register() {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return
-  if (!process.env.VERCEL) return
-  if (process.env.RM_AUTO_MIGRATE_BLOB !== '1') return
+  if (process.env.VERCEL_ENV !== 'production') return
   if (!process.env.BLOB_READ_WRITE_TOKEN || !process.env.POSTGRES_URL) return
 
   const { getPayload } = await import('payload')
