@@ -1,0 +1,38 @@
+---
+description: IDs de produção RM Embalagens (Vercel + GitHub) para o agente.
+alwaysApply: true
+---
+
+# RM Embalagens — Vercel e GitHub
+
+## GitHub
+
+- Org: `RM-Embalagens-e-Etiquetas`
+- Repo de deploy: `RM-Embalagens-e-Etiquetas/website` (branch `main`, público)
+- Remoto local: `origin` → esse repo
+- Conta com acesso (gh): `dev-jose-roberto`
+
+## Vercel
+
+- Time: `rm-embalagens-e-etiquetas` (`team_2ZghfkNSgSzgbcCPKcGaKZAL`)
+- Projeto: `rm-embalagens` (`prj_fib4NRT51vCJja9tSpzPLnkdkmnY`)
+- URL: `https://rm-embalagens.vercel.app`
+- Conta CLI: `rmetiquetaseembalagens-9670`
+- Link local: `.vercel/project.json`
+
+## Env de produção (já configuradas)
+
+- `PAYLOAD_SECRET`, `POSTGRES_URL`, `DATABASE_URL`, `BLOB_READ_WRITE_TOKEN`
+- `NEXT_PUBLIC_SERVER_URL` = `https://rm-embalagens.vercel.app`
+
+## MCP no Cursor
+
+- Vercel: `https://mcp.vercel.com` (OAuth — mesma conta do time acima)
+- GitHub: `https://api.githubcopilot.com/mcp/` (OAuth — sem PAT no `mcp.json`)
+- Se Vercel MCP der 403 no scope `rm-embalagens-e-etiquetas`: Settings → MCP → Vercel → reconectar e escolher o time **RM Embalagens e Etiquetas**
+- CLI alternativa: `npx vercel env ls`, `npx vercel logs`, `npx vercel inspect`
+
+## Fotos
+
+- Site usa `public/` via `src/lib/media-url.js` na Vercel
+- Uploads do `/admin` vão pro Blob; repopular: `npm run seed:prod` (com `.env.vercel`)

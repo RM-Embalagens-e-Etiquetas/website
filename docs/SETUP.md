@@ -62,3 +62,7 @@ npm run dev
 ```
 
 Admin: http://localhost:3000/admin
+
+## Cursor (agente lê Vercel + GitHub)
+
+Ver **docs/CURSOR-MCP.md** — OAuth no MCP, mesma conta do time Vercel e da org GitHub.
