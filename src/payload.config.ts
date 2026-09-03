@@ -1,7 +1,9 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { pt } from '@payloadcms/translations/languages/pt'
 import dotenv from 'dotenv'
 import { buildConfig } from 'payload'
@@ -20,6 +22,34 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 dotenv.config()
+
+const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
+const usePostgres = Boolean(postgresUrl)
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+
+const db = usePostgres
+  ? vercelPostgresAdapter({
+      pool: {
+        connectionString: postgresUrl,
+      },
+    })
+  : sqliteAdapter({
+      client: {
+        url: process.env.DATABASE_URI || 'file:./payload.sqlite',
+      },
+    })
+
+const plugins =
+  usePostgres && blobToken
+    ? [
+        vercelBlobStorage({
+          collections: {
+            media: true,
+          },
+          token: blobToken,
+        }),
+      ]
+    : []
 
 export default buildConfig({
   admin: {
@@ -73,14 +103,11 @@ export default buildConfig({
   collections: [Users, Media, ProductGroups, ProductCategories],
   globals: [Site, Home, About, Contact],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || 'file:./payload.sqlite',
-    },
-  }),
+  db,
+  plugins,
   sharp,
 })
