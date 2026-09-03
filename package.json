@@ -16,7 +16,8 @@
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
     "fix:migration": "tsx src/scripts/fix-dev-migration.ts",
-    "seed": "tsx src/scripts/seed.ts"
+    "seed": "tsx src/scripts/seed.ts",
+    "reupload-media": "tsx src/scripts/reupload-media.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

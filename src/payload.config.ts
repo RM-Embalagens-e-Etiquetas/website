@@ -27,6 +27,14 @@ dotenv.config()
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
 const usePostgres = Boolean(postgresUrl)
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+const onVercel = Boolean(process.env.VERCEL)
+
+if (usePostgres && onVercel && !blobToken) {
+  console.warn(
+    '[rm-embalagens] BLOB_READ_WRITE_TOKEN ausente neste deploy. ' +
+      'Marque Preview + Production em Settings → Environment Variables e faça redeploy.',
+  )
+}
 
 const db = usePostgres
   ? vercelPostgresAdapter({
