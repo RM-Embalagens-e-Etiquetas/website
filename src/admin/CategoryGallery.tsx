@@ -1,11 +1,10 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { mediaUrl } from '@/lib/media-url'
 import ScrollToLine from './ScrollToLine'
 
 function mediaSrc(doc) {
-  if (!doc || typeof doc !== 'object') return null
-  if (doc.filename) return `/api/media/file/${encodeURIComponent(doc.filename)}`
-  return doc.url || null
+  return mediaUrl(doc)
 }
 
 export default async function CategoryGallery() {

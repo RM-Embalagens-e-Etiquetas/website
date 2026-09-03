@@ -23,6 +23,16 @@ src/content/
 
 Fotos dos produtos ficam em `public/products/{slug}/`.
 
+## Imagens (importante para quota Vercel)
+
+As fotos do catálogo vêm de `public/products/` — servidas pela **CDN estática da Vercel** (grátis, sem serverless).
+
+O CMS guarda referências (filename); o site resolve para `/products/sacolas-algodao/01.jpg` etc.
+
+- **Funcionária** edita textos no admin normalmente
+- **Novas fotos** → adicionar em `public/products/{slug}/` no repo + sync, ou upload pelo admin (Blob)
+- **Não** precisa rodar sync só por causa de imagens se os arquivos já estão em `public/`
+
 ## Sincronizar para produção
 
 ### Pelo GitHub (recomendado)

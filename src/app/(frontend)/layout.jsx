@@ -10,7 +10,7 @@ const jost = Jost({
   variable: '--font-jost',
 })
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export async function generateMetadata() {
   const site = await getSite()

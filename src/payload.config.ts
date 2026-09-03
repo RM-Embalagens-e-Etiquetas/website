@@ -61,6 +61,7 @@ const plugins =
             media: true,
           },
           token: blobToken,
+          // @ts-expect-error Vercel private stores are supported at runtime
           access: blobAccess,
           clientUploads: true,
         }),
