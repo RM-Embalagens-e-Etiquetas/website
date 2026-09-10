@@ -2,6 +2,8 @@ import type { CollectionConfig } from 'payload'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { rejectBrokenProductionUpload } from '../lib/validate-media-upload'
+
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export const Media: CollectionConfig = {
@@ -18,6 +20,9 @@ export const Media: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [rejectBrokenProductionUpload],
   },
   fields: [
     {

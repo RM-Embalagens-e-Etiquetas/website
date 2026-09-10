@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 
 import config from '@payload-config'
 import { countPendingMedia, migrateMediaBatch } from '@/lib/migrate-blob'
+import { isBulkMediaAllowed, isValidBlobToken } from '@/lib/storage-env'
 
 export const maxDuration = 60
 
@@ -14,8 +15,18 @@ export async function POST(request: Request) {
   const auth = request.headers.get('authorization')
   if (!secret || auth !== `Bearer ${secret}`) return unauthorized()
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return Response.json({ error: 'BLOB_READ_WRITE_TOKEN missing on this deployment' }, { status: 503 })
+  if (!isBulkMediaAllowed()) {
+    return Response.json(
+      {
+        error:
+          'Migração Blob desativada neste deploy (protege cota). Use RM_ALLOW_BULK_MEDIA=1 temporariamente se necessário.',
+      },
+      { status: 403 },
+    )
+  }
+
+  if (!isValidBlobToken(process.env.BLOB_READ_WRITE_TOKEN)) {
+    return Response.json({ error: 'BLOB_READ_WRITE_TOKEN inválido neste deploy' }, { status: 503 })
   }
 
   const url = new URL(request.url)
@@ -37,6 +48,7 @@ export async function GET(request: Request) {
 
   return Response.json({
     pending,
-    blobConfigured: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    blobConfigured: isValidBlobToken(process.env.BLOB_READ_WRITE_TOKEN),
+    bulkAllowed: isBulkMediaAllowed(),
   })
 }

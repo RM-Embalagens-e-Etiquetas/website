@@ -51,6 +51,31 @@ body:has(.rm-board) .rm-howto {
   display: none;
 }
 
+.rm-blob-notice {
+  padding: 10px 22px;
+  border-bottom: 1px solid color-mix(in srgb, #c2410c 25%, var(--theme-elevation-100));
+  background: color-mix(in srgb, #fff7ed 70%, var(--theme-elevation-0));
+  font-size: 13px;
+  color: #9a3412;
+}
+
+.rm-blob-notice strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rm-blob-notice ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.rm-blob-notice li + li {
+  margin-top: 4px;
+}
+
 .rm-admin-logo {
   display: inline-flex;
   align-items: center;

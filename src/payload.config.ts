@@ -17,6 +17,7 @@ import { Company } from './globals/Company'
 import { HomeConfig } from './globals/HomeConfig'
 import { migrations } from './migrations'
 import { getServerURL } from './lib/server-url'
+import { isValidBlobToken, isVercelProductionRuntime } from './lib/storage-env'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,7 +34,7 @@ function sqliteDatabaseUrl() {
 
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
-const onVercelRuntime = Boolean(process.env.VERCEL_ENV)
+const onVercelRuntime = isVercelProductionRuntime()
 const isSeedScript = process.argv.some((arg) => arg.endsWith('seed.ts'))
 const localDevScript = process.argv.some(
   (arg) => arg.includes('dev-prep') || arg.includes('e2e-local'),
@@ -67,8 +68,10 @@ const db = usePostgres
       },
     })
 
+const validBlobToken = isValidBlobToken(blobToken)
+
 const plugins =
-  usePostgres && blobToken
+  usePostgres && validBlobToken
     ? [
         vercelBlobStorage({
           collections: {
@@ -110,7 +113,7 @@ export default buildConfig({
         Logo: '/admin/Logo',
         Icon: '/admin/NavIcon',
       },
-      header: ['/admin/HowToBar'],
+      header: ['/admin/HowToBar', '/admin/BlobNotice'],
       beforeNavLinks: ['/admin/Sidebar'],
     },
     livePreview: {

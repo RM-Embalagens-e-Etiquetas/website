@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 
 import config from '@payload-config'
+import { isBulkMediaAllowed, isValidBlobToken } from '@/lib/storage-env'
 import { seedBootstrap } from '@/scripts/lib/seed-bootstrap'
 
 export const maxDuration = 300
@@ -15,7 +16,17 @@ export async function POST(request: Request) {
   const auth = request.headers.get('authorization')
   if (!secret || auth !== `Bearer ${secret}`) return unauthorized()
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN?.startsWith('vercel_blob_rw_')) {
+  if (!isBulkMediaAllowed()) {
+    return Response.json(
+      {
+        error:
+          'Seed em produção desativado (protege cota Blob). Use RM_ALLOW_BULK_MEDIA=1 só se souber o que está fazendo.',
+      },
+      { status: 403 },
+    )
+  }
+
+  if (!isValidBlobToken(process.env.BLOB_READ_WRITE_TOKEN)) {
     return Response.json({ error: 'BLOB_READ_WRITE_TOKEN inválido neste deploy' }, { status: 503 })
   }
 
