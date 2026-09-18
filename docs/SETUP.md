@@ -57,7 +57,7 @@ Push no `main` ou **Deployments** → **Redeploy** → confira o site.
 ## Local
 
 ```bash
-cp .env.example .env
+# .env local: PAYLOAD_SECRET, DATABASE_URI (SQLite) ou POSTGRES_URL + BLOB (ver docs/CURSOR-MCP.md)
 npm run dev
 ```
 

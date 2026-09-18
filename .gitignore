@@ -33,5 +33,4 @@ payload.sqlite-*
 media
 src/payload-types.ts
 .env*
-!.env.example
 .env.vercel
