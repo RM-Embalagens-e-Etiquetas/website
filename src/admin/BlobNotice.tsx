@@ -7,9 +7,7 @@ type Health = {
   production?: boolean
   blobConfigured?: boolean
   audit?: {
-    total: number
-    orphans: number
-    broken: number
+    brokenReferenced?: number
     blob: number
   } | null
 }
@@ -40,14 +38,11 @@ export default function BlobNotice() {
     warnings.push('Armazenamento de fotos (Blob) não configurado neste deploy.')
   }
 
-  if (audit && audit.broken > 0) {
+  const brokenInUse = audit?.brokenReferenced ?? 0
+  if (brokenInUse > 0) {
     warnings.push(
-      `${audit.broken} foto(s) quebrada(s) no banco — remova e envie de novo (não ficam pretas no site).`,
+      `${brokenInUse} foto(s) do catálogo não carregaram — remova na galeria e envie o arquivo de novo.`,
     )
-  }
-
-  if (audit && audit.orphans > 50) {
-    warnings.push(`${audit.orphans} arquivos órfãos no banco (lixo técnico — peça limpeza ao suporte).`)
   }
 
   if (warnings.length === 0) return null

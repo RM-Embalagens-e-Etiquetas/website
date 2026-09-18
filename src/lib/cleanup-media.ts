@@ -8,6 +8,8 @@ export type MediaAudit = {
   referenced: number
   orphans: number
   broken: number
+  /** Quebradas ainda ligadas a produto/home — aparecem pretas no site. */
+  brokenReferenced: number
   blob: number
 }
 
@@ -22,12 +24,15 @@ export async function auditMedia(payload: Payload): Promise<MediaAudit> {
 
   let orphans = 0
   let broken = 0
+  let brokenReferenced = 0
   let blob = 0
 
   for (const doc of all.docs) {
     const url = typeof doc.url === 'string' ? doc.url : ''
     if (isBlobMediaUrl(url)) blob++
-    if (isBrokenMediaUrl(url)) broken++
+    const brokenUrl = isBrokenMediaUrl(url)
+    if (brokenUrl) broken++
+    if (brokenUrl && referenced.has(doc.id)) brokenReferenced++
     if (!referenced.has(doc.id)) orphans++
   }
 
@@ -36,6 +41,7 @@ export async function auditMedia(payload: Payload): Promise<MediaAudit> {
     referenced: referenced.size,
     orphans,
     broken,
+    brokenReferenced,
     blob,
   }
 }

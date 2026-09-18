@@ -24,7 +24,9 @@
     "seed:prod": "RM_SEED_PRODUCTION=1 tsx src/scripts/seed.ts",
     "seed:prod:remote": "tsx src/scripts/seed-prod-remote.ts",
     "migrate:blob:remote": "tsx src/scripts/migrate-blob-remote.ts",
-    "cleanup:media:remote": "tsx src/scripts/cleanup-media-remote.ts"
+    "cleanup:media:remote": "tsx src/scripts/cleanup-media-remote.ts",
+    "cleanup:media:prod": "tsx src/scripts/cleanup-media-prod.ts",
+    "fix:broken-gallery:prod": "tsx src/scripts/fix-broken-gallery-refs.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

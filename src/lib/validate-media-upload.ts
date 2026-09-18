@@ -25,8 +25,8 @@ export const rejectBrokenProductionUpload: CollectionAfterChangeHook = async ({
   }
 
   throw new APIError(
-    'Não foi possível enviar a foto para o armazenamento (limite ou falha temporária). ' +
-      'Tente de novo em alguns minutos. Se persistir, avise o suporte técnico.',
+    'Esta foto não foi salva no armazenamento. Remova-a da galeria, envie o arquivo de novo e salve. ' +
+      'Se repetir, tente outra imagem ou avise o suporte.',
     400,
   )
 }

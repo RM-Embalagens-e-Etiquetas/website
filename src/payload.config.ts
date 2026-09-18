@@ -36,11 +36,14 @@ const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN
 const onVercelRuntime = isVercelProductionRuntime()
 const isSeedScript = process.argv.some((arg) => arg.endsWith('seed.ts'))
+const isProdMaintenanceScript = process.argv.some(
+  (arg) => arg.includes('cleanup-media-prod') || arg.includes('fix-broken-gallery-refs'),
+)
 const localDevScript = process.argv.some(
   (arg) => arg.includes('dev-prep') || arg.includes('e2e-local'),
 )
 // `npm run seed` com POSTGRES_URL + BLOB → produção. Dev/e2e continuam no SQLite.
-const preferLocalSqlite = isSeedScript
+const preferLocalSqlite = isSeedScript || isProdMaintenanceScript
   ? !(postgresUrl && blobToken)
   : localDevScript ||
     (!onVercelRuntime && process.env.NODE_ENV !== 'production' && process.env.RM_USE_POSTGRES_LOCAL !== '1')
