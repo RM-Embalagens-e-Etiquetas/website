@@ -1,12 +1,14 @@
 import CategoryCard from '@/components/products/CategoryCard'
 import { PAGES, SEO } from '@/lib/copy'
 import { categoryCover, getProductCategories, getProductGroups } from '@/lib/cms'
+import { pageMetadata } from '@/lib/site-metadata'
 
 export async function generateMetadata() {
-  return {
+  return pageMetadata({
     title: SEO.catalogTitle,
     description: SEO.catalogDescription,
-  }
+    path: '/produtos',
+  })
 }
 
 export default async function ProdutosPage() {

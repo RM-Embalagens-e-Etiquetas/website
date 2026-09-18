@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { put } from '@vercel/blob'
-import type { Payload } from 'payload'
+import type { CollectionSlug, GlobalSlug, Payload } from 'payload'
 
 import {
   DEFAULT_CTA_TEXT,
@@ -188,7 +188,7 @@ function isBlobUrl(url: string | null | undefined) {
   return Boolean(url && url.includes('blob.vercel-storage.com'))
 }
 
-async function findBySlug(payload: Payload, collection: string, slug: string) {
+async function findBySlug(payload: Payload, collection: CollectionSlug, slug: string) {
   const result = await payload.find({
     collection,
     where: { slug: { equals: slug } },
@@ -198,10 +198,12 @@ async function findBySlug(payload: Payload, collection: string, slug: string) {
   return result.docs[0] || null
 }
 
-async function globalIsPopulated(payload: Payload, slug: string) {
+async function globalIsPopulated(payload: Payload, slug: GlobalSlug) {
   const doc = await payload.findGlobal({ slug, depth: 0 })
-  if (slug === 'company') return Boolean(doc?.phone)
-  if (slug === 'home-config') return Boolean(doc?.sections?.length)
+  if (slug === 'company') return Boolean((doc as { phone?: string } | null)?.phone)
+  if (slug === 'home-config') {
+    return Boolean((doc as { sections?: unknown[] } | null)?.sections?.length)
+  }
   return Boolean(doc)
 }
 
@@ -417,8 +419,8 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
             title: category.title,
             slug: category.slug,
             description: category.description,
-            group: groupIds[category.group],
-            gallery: galleryIds,
+            group: groupIds[category.group] as number,
+            gallery: galleryIds as number[],
             order: index,
           },
         })
@@ -439,8 +441,8 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
             title: category.title,
             slug: category.slug,
             description: category.description,
-            group: groupIds[category.group],
-            gallery: galleryIds,
+            group: groupIds[category.group] as number,
+            gallery: galleryIds as number[],
             order: index,
           },
         })
@@ -487,12 +489,15 @@ export async function seedBootstrap(payload: Payload, options: SeedOptions = {})
     ]
 
     for (const global of globalsToSync) {
-      const exists = await globalIsPopulated(payload, global.slug)
+      const exists = await globalIsPopulated(payload, global.slug as GlobalSlug)
       if (exists && !force) {
         summary.skipped.push(`global:${global.slug}`)
         continue
       }
-      await payload.updateGlobal({ slug: global.slug, data: global.data })
+      await payload.updateGlobal({
+        slug: global.slug as GlobalSlug,
+        data: global.data as never,
+      })
       summary.globals++
       console.log(`Global: ${global.slug}`)
     }

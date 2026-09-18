@@ -10,16 +10,24 @@ import {
   getCompany,
   whatsappUrl,
 } from '@/lib/cms'
+import { pageMetadata } from '@/lib/site-metadata'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const category = await getCategoryBySlug(slug)
   if (!category) return {}
 
-  return {
-    title: `${category.title} | RM Embalagens`,
-    description: category.description,
-  }
+  const title = `${category.title} | RM Embalagens`
+  const description =
+    (typeof category.description === 'string' && category.description.trim()) ||
+    `Confira ${category.title} — embalagens e etiquetas personalizadas RM Embalagens.`
+
+  return pageMetadata({
+    title,
+    description,
+    path: `/produtos/${slug}`,
+    image: categoryCover(category) || undefined,
+  })
 }
 
 export default async function ProductCategoryPage({ params }) {

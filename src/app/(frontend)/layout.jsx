@@ -1,8 +1,8 @@
 import { Jost } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { SEO } from '@/lib/copy'
 import { getCompany, getProductGroups, logoUrl, whatsappUrl } from '@/lib/cms'
+import { baseSiteMetadata } from '@/lib/site-metadata'
 import '../globals.css'
 
 const jost = Jost({
@@ -14,17 +14,7 @@ const jost = Jost({
 export const revalidate = 3600
 
 export async function generateMetadata() {
-  return {
-    title: {
-      default: SEO.defaultTitle,
-      template: '%s',
-    },
-    description: SEO.defaultDescription,
-    keywords: SEO.keywords,
-    icons: {
-      icon: '/logo.png',
-    },
-  }
+  return baseSiteMetadata()
 }
 
 export default async function FrontendLayout({ children }) {

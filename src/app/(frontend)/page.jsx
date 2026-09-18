@@ -6,18 +6,21 @@ import CatalogPreview from '@/components/home/CatalogPreview'
 import AboutTeaser from '@/components/home/AboutTeaser'
 import ContactCta from '@/components/ContactCta'
 import { DEFAULT_HOME_SECTIONS } from '@/lib/copy'
+import { SEO } from '@/lib/copy'
 import {
   categoryCover,
   getCompany,
   getHomeConfig,
   getProductCategories,
   getProductGroups,
+  logoUrl,
   mediaUrl,
   resolveFeaturedGroups,
   resolveHomeSections,
   resolveMarqueeTitles,
   whatsappUrl,
 } from '@/lib/cms'
+import { pageMetadata, siteUrl } from '@/lib/site-metadata'
 
 function buildPreviewGroups(groups, categories) {
   return groups.map((group) => {
@@ -31,6 +34,15 @@ function buildPreviewGroups(groups, categories) {
       count: groupCategories.length,
       cover: categoryCover(groupCategories[0]),
     }
+  })
+}
+
+export async function generateMetadata() {
+  return pageMetadata({
+    title: SEO.defaultTitle,
+    description: SEO.defaultDescription,
+    path: '/',
+    image: '/hero.jpg',
   })
 }
 
@@ -66,9 +78,30 @@ export default async function HomePage() {
   const previewGroups = buildPreviewGroups(featuredGroups, categories)
 
   const context = { homeConfig, company, categories, previewGroups, waUrl }
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: company.brandName || 'RM Embalagens',
+    url: siteUrl(),
+    logo: new URL(logoUrl(company), siteUrl()).toString(),
+    description: SEO.defaultDescription,
+    sameAs: [company.instagramUrl].filter(Boolean),
+    contactPoint: company.whatsapp
+      ? {
+          '@type': 'ContactPoint',
+          contactType: 'customer service',
+          telephone: `+${String(company.whatsapp).replace(/\D/g, '')}`,
+          availableLanguage: ['Portuguese'],
+        }
+      : undefined,
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
       <Hero config={homeConfig} whatsappUrl={waUrl} />
       {sections.map((item) => {
         const render = SECTION_RENDERERS[item.section]

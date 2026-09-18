@@ -31,6 +31,9 @@ payload.sqlite-*
 *.sqlite
 .dev
 media
+# Cópias locais / legado — fotos de seed ficam em public/products
+src/assets/lib/
+src/assets/img/
 src/payload-types.ts
 .env*
 .env.vercel

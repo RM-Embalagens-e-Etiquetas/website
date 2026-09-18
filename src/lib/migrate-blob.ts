@@ -19,7 +19,7 @@ function resolveSourcePath(filename: string) {
 
   if (filename === 'hero.jpg') return path.join(root, 'public/hero.jpg')
   if (filename === 'sobre-producao.jpg') {
-    return path.join(root, 'src/assets/img/inicial/sacolas/IMG-20220726-WA0040.jpg')
+    return path.join(root, 'public/sobre-producao.jpg')
   }
 
   const match = filename.match(/^(.+)-(\d+)\.(jpe?g|png|webp)$/i)

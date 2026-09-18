@@ -1,11 +1,13 @@
 import { CONTACT, COPY, SEO } from '@/lib/copy'
 import { getCompany, whatsappUrl } from '@/lib/cms'
+import { pageMetadata } from '@/lib/site-metadata'
 
 export async function generateMetadata() {
-  return {
+  return pageMetadata({
     title: SEO.contactTitle,
     description: SEO.contactDescription,
-  }
+    path: '/contato',
+  })
 }
 
 export default async function ContatoPage() {

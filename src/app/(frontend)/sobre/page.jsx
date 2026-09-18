@@ -1,12 +1,15 @@
 import ContactCta from '@/components/ContactCta'
 import { ABOUT, COPY, SEO } from '@/lib/copy'
 import { getCompany, getHomeConfig, whatsappUrl } from '@/lib/cms'
+import { pageMetadata } from '@/lib/site-metadata'
 
 export async function generateMetadata() {
-  return {
+  return pageMetadata({
     title: SEO.aboutTitle,
     description: SEO.aboutDescription,
-  }
+    path: '/sobre',
+    image: '/sobre-producao.jpg',
+  })
 }
 
 export default async function SobrePage() {
