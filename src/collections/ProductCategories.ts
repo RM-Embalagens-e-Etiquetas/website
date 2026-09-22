@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { easyAdmin } from '../admin/easy'
 import { revalidatePublicSite } from '../lib/revalidate-site'
+import { getServerURL } from '../lib/server-url'
 import { setSlugFromTitle } from '../utilities/slug'
 
 export const ProductCategories: CollectionConfig = {
@@ -21,8 +22,7 @@ export const ProductCategories: CollectionConfig = {
       beforeListTable: ['/admin/CategoryGallery'],
     },
     livePreview: {
-      url: ({ data }) =>
-        `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/produtos/${data?.slug || ''}`,
+      url: ({ data }) => `${getServerURL()}/produtos/${data?.slug || ''}`,
     },
   },
   access: {

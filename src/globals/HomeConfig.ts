@@ -1,8 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { easyGlobal } from '../admin/easy'
 import { revalidatePublicSite } from '../lib/revalidate-site'
+import { getServerURL } from '../lib/server-url'
 
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 const rowLabel = '/admin/RowLabel'
 
 const SECTION_OPTIONS = [
@@ -23,7 +23,7 @@ export const HomeConfig: GlobalConfig = {
     group: 'Negócio',
     description: 'Quais seções aparecem, destaques, fotos e conteúdo de negócio da página inicial.',
     livePreview: {
-      url: () => serverURL,
+      url: () => getServerURL(),
     },
   },
   access: {

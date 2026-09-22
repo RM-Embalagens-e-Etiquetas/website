@@ -1,8 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { easyGlobal } from '../admin/easy'
 import { revalidatePublicSite } from '../lib/revalidate-site'
-
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+import { getServerURL } from '../lib/server-url'
 
 export const Company: GlobalConfig = {
   slug: 'company',
@@ -13,7 +12,7 @@ export const Company: GlobalConfig = {
     group: 'Empresa',
     description: 'Logo, telefone, WhatsApp, Instagram, endereço e texto do rodapé.',
     livePreview: {
-      url: () => `${serverURL}/contato`,
+      url: () => `${getServerURL()}/contato`,
     },
   },
   access: {
