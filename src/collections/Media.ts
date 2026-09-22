@@ -3,7 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { blobPublicBaseUrl, isBlobMediaUrl, isValidBlobToken, publicBlobUrl } from '../lib/storage-env'
-import { rejectBrokenProductionUpload } from '../lib/validate-media-upload'
+import { revalidateMediaChange } from '../lib/validate-media-upload'
 
 const blobHost = (() => {
   const base = blobPublicBaseUrl()
@@ -15,14 +15,26 @@ const blobHost = (() => {
   }
 })()
 
-/** Grava a URL pública do Blob no documento novo. Leituras antigas continuam com a URL já salva. */
+function uploadedBlobUrl(file: { clientUploadContext?: unknown; name?: string } | undefined) {
+  const context = file?.clientUploadContext
+  if (context && typeof context === 'object' && 'url' in context) {
+    const url = (context as { url?: unknown }).url
+    if (typeof url === 'string' && isBlobMediaUrl(url)) return url
+  }
+  return null
+}
+
+/** Grava o endereço real do Blob. Fotos antigas continuam com o endereço já salvo. */
 export const assignBlobUrlOnUpload: CollectionBeforeChangeHook = ({ data, req }) => {
   if (!data || !req.file) return data
+  const fromClient = uploadedBlobUrl(req.file)
+  if (fromClient) {
+    data.url = fromClient
+    return data
+  }
   if (!isValidBlobToken(process.env.BLOB_READ_WRITE_TOKEN)) return data
-  const filename =
-    (typeof data.filename === 'string' && data.filename) ||
-    (typeof req.file.name === 'string' ? req.file.name : '')
-  if (!filename) return data
+  const filename = typeof req.file.name === 'string' && req.file.name ? req.file.name : data.filename
+  if (typeof filename !== 'string' || !filename) return data
   const prefix = typeof data.prefix === 'string' ? data.prefix : undefined
   const next = publicBlobUrl(filename, prefix)
   if (next) data.url = next
@@ -56,7 +68,7 @@ export const Media: CollectionConfig = {
         return data
       },
     ],
-    afterChange: [rejectBrokenProductionUpload],
+    afterChange: [revalidateMediaChange],
   },
   fields: [
     {

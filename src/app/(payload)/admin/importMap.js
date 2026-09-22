@@ -6,6 +6,7 @@ import { default as default_5612336faa545c59a8b5e037140deecc } from '../../../ad
 import { default as default_8c3bf6d9c8d24e4e81ab6192a4938147 } from '../../../admin/Logo'
 import { default as default_a4688044b34e9b32ff93205c10e4da61 } from '../../../admin/Sidebar'
 import { default as default_b1da18705623495fe0da513a008df5f5 } from '../../../admin/Dashboard'
+import { default as default_blob_upload_handler } from '../../../admin/BlobUploadHandler'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -18,5 +19,6 @@ export const importMap = {
   "/admin/Logo#default": default_8c3bf6d9c8d24e4e81ab6192a4938147,
   "/admin/Sidebar#default": default_a4688044b34e9b32ff93205c10e4da61,
   "/admin/Dashboard#default": default_b1da18705623495fe0da513a008df5f5,
+  "/admin/BlobUploadHandler#default": default_blob_upload_handler,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

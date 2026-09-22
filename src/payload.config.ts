@@ -88,6 +88,24 @@ const plugins =
           // O navegador envia a foto direto ao Blob. O servidor continua aceitando seed e API.
           clientUploads: true,
         }),
+        (incoming) => {
+          incoming.admin ??= {}
+          incoming.admin.components ??= {}
+          const providers = incoming.admin.components.providers ?? []
+          incoming.admin.components.providers = [
+            {
+              clientProps: {
+                collectionSlug: 'media',
+                enabled: true,
+                extra: { addRandomSuffix: false, useCompositePrefixes: false },
+                serverHandlerPath: '/vercel-blob-client-upload-route',
+              },
+              path: '/admin/BlobUploadHandler',
+            },
+            ...providers,
+          ]
+          return incoming
+        },
       ]
     : []
 
