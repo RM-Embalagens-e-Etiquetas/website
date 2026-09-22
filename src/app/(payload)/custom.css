@@ -577,6 +577,29 @@ body:has(.rm-board) .rm-howto {
   display: none;
 }
 
+/* Payload esconde o Salvar do upload em viewports ≤1024px. */
+.bulk-upload--actions-bar {
+  height: auto;
+  min-height: var(--doc-controls-height);
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.bulk-upload--actions-bar__saveButtons {
+  display: flex !important;
+  margin-left: auto;
+}
+
+.bulk-upload--actions-bar__saveButtons .btn--style-primary,
+.file-selections__header__mobileDocActions .btn--style-primary,
+.drawer .doc-controls__controls .btn--style-primary {
+  min-width: 112px;
+}
+
+.drawer .doc-controls.gutter {
+  top: 0;
+}
+
 .upload--has-many__draggable-rows {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
