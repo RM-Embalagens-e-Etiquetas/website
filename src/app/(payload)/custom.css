@@ -611,6 +611,26 @@ body:has(.rm-board) .rm-howto {
   height: auto !important;
 }
 
+.bulk-upload--drawer-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  height: auto !important;
+  min-height: 48px !important;
+  overflow: visible !important;
+}
+
+.bulk-upload--drawer-header h2 {
+  margin-right: auto !important;
+}
+
+.bulk-upload--drawer-header .bulk-upload--actions-bar__saveButtons {
+  display: flex !important;
+  margin-left: 0 !important;
+  order: 2;
+}
+
 .upload--has-many__draggable-rows {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));

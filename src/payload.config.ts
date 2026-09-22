@@ -116,7 +116,7 @@ export default buildConfig({
         Logo: '/admin/Logo',
         Icon: '/admin/NavIcon',
       },
-      header: [],
+      header: ['/admin/ForceUploadSave'],
       beforeNavLinks: ['/admin/Sidebar'],
     },
     livePreview: {
