@@ -2,9 +2,12 @@
 
 import { usePathname } from 'next/navigation'
 
+import { isAdminDocumentForm } from './form-routes'
+
 export default function HowToBar() {
   const pathname = usePathname() || ''
   if (pathname === '/admin' || pathname === '/admin/') return null
+  if (isAdminDocumentForm(pathname)) return null
 
   return (
     <div className="rm-howto">

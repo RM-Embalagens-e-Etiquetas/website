@@ -577,9 +577,60 @@ body:has(.rm-board) .rm-howto {
   display: none;
 }
 
-.doc-controls__controls .btn--style-primary {
-  min-width: 112px;
-  font-weight: 700;
+.rm-save-reminder {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 10px 22px;
+  border-bottom: 1px solid color-mix(in srgb, #15803d 30%, var(--theme-elevation-100));
+  background: color-mix(in srgb, #dcfce7 85%, var(--theme-elevation-0));
+  color: #14532d;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.rm-save-reminder strong {
+  font-weight: 800;
+}
+
+/* Barra de ações do formulário sempre visível ao rolar */
+.template-default .doc-controls,
+.template-default [class*='doc-controls'] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: color-mix(in srgb, var(--theme-elevation-0) 94%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--theme-elevation-100);
+}
+
+.doc-controls__controls .btn--style-primary,
+form .btn--style-primary[type='submit'],
+button.btn--style-primary[id*='save'] {
+  min-width: 120px;
+  min-height: 40px;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-elevation-800) 12%, transparent);
+}
+
+@media (max-width: 768px) {
+  .rm-save-reminder {
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .doc-controls__controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .doc-controls__controls .btn--style-primary {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .upload--has-many__draggable-rows {

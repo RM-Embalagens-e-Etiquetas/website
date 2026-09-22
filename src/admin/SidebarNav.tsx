@@ -92,8 +92,13 @@ function LineNav({ group }: { group: Group }) {
     window.sessionStorage.setItem('rm-line', group.slug)
     if (onCatalog) {
       event.preventDefault()
+      const nextHash = `#${group.slug}`
+      if (window.location.hash !== nextHash) {
+        window.location.hash = group.slug
+      } else {
+        window.dispatchEvent(new Event('hashchange'))
+      }
       document.getElementById(group.slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      window.dispatchEvent(new HashChangeEvent('hashchange'))
     }
     setOpen(true)
   }

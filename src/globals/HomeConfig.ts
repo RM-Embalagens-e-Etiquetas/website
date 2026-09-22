@@ -16,7 +16,7 @@ const SECTION_OPTIONS = [
 export const HomeConfig: GlobalConfig = {
   slug: 'home-config',
   label: 'Configuração da home',
-  lockDocuments: false,
+  lockDocuments: { duration: 600 },
   admin: {
     ...easyGlobal,
     group: 'Negócio',
@@ -43,7 +43,7 @@ export const HomeConfig: GlobalConfig = {
               labels: { singular: 'Seção', plural: 'Seções' },
               admin: {
                 components: { RowLabel: rowLabel },
-                initCollapsed: false,
+                initCollapsed: true,
               },
               fields: [
                 {
@@ -99,7 +99,7 @@ export const HomeConfig: GlobalConfig = {
               type: 'array',
               label: 'Números em destaque',
               labels: { singular: 'Número', plural: 'Números' },
-              admin: { components: { RowLabel: rowLabel } },
+              admin: { components: { RowLabel: rowLabel }, initCollapsed: true },
               fields: [
                 { name: 'value', type: 'text', label: 'Número', required: true },
                 { name: 'label', type: 'text', label: 'Descrição', required: true },
@@ -136,7 +136,7 @@ export const HomeConfig: GlobalConfig = {
               type: 'array',
               label: 'Cartões',
               labels: { singular: 'Cartão', plural: 'Cartões' },
-              admin: { components: { RowLabel: rowLabel } },
+              admin: { components: { RowLabel: rowLabel }, initCollapsed: true },
               fields: [
                 { name: 'title', type: 'text', label: 'Título', required: true },
                 { name: 'description', type: 'textarea', label: 'Texto', required: true },

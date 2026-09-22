@@ -116,7 +116,7 @@ export default buildConfig({
         Logo: '/admin/Logo',
         Icon: '/admin/NavIcon',
       },
-      header: ['/admin/HowToBar', '/admin/BlobNotice'],
+      header: ['/admin/SaveReminder', '/admin/HowToBar', '/admin/BlobNotice'],
       beforeNavLinks: ['/admin/Sidebar'],
     },
     livePreview: {

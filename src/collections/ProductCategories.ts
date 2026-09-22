@@ -8,7 +8,7 @@ export const ProductCategories: CollectionConfig = {
     singular: 'Produto',
     plural: 'Produtos',
   },
-  lockDocuments: false,
+  lockDocuments: { duration: 600 },
   admin: {
     ...easyAdmin,
     useAsTitle: 'title',
