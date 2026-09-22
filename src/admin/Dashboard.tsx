@@ -36,8 +36,8 @@ export default async function Dashboard() {
         <p className="rm-board__eyebrow">Painel da RM Embalagens</p>
         <h1>Catálogo e dados da empresa</h1>
         <p>
-          Aqui você gerencia produtos, fotos, contatos e o que aparece na home. Textos do site (menu,
-          títulos das páginas) são definidos pelo desenvolvedor.
+          Aqui você cria as categorias do catálogo e, dentro de cada uma, os produtos e as fotos.
+          Contatos e a home ficam nos cartões abaixo.
         </p>
       </header>
 
@@ -99,11 +99,13 @@ export default async function Dashboard() {
         <div className="rm-board__section-head">
           <div>
             <h2>Catálogo</h2>
-            <p className="rm-board__hint">Linhas de produtos e categorias com fotos.</p>
+            <p className="rm-board__hint">
+              Crie a categoria aqui. O produto novo só entra dentro de uma categoria que já existe.
+            </p>
           </div>
-          <a className="rm-board__add" href="/admin/collections/product-categories/create">
+          <a className="rm-board__add" href="/admin/collections/product-groups/create">
             <Icon name="plus" />
-            Novo produto
+            Nova categoria
           </a>
         </div>
       </section>
@@ -124,11 +126,14 @@ export default async function Dashboard() {
               </div>
               <div className="rm-board__actions">
                 <a className="rm-board__ghost" href={`/admin/collections/product-groups/${group.id}`}>
-                  Nome e texto da linha
+                  Nome e texto da categoria
                 </a>
-                <a className="rm-board__add" href="/admin/collections/product-categories/create">
+                <a
+                  className="rm-board__add"
+                  href={`/admin/collections/product-categories/create?group=${group.id}`}
+                >
                   <Icon name="plus" />
-                  Novo
+                  Novo produto
                 </a>
               </div>
             </div>

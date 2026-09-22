@@ -15,3 +15,33 @@ export function getServerURL() {
 
   return 'http://localhost:3000'
 }
+
+/**
+ * Origens aceitas no cookie do admin.
+ * O Payload só confia no serverURL. O painel também abre em
+ * rmembalagenseetiquetas.vercel.app; sem essa origem o POST perde o login
+ * e o botão Salvar do upload não é renderizado.
+ */
+export function getCsrfOrigins() {
+  const origins = new Set<string>()
+
+  const add = (value?: string | null) => {
+    const raw = value?.trim().replace(/\/$/, '')
+    if (!raw) return
+    try {
+      const url = new URL(raw.startsWith('http') ? raw : `https://${raw}`)
+      origins.add(url.origin)
+    } catch {
+      // host inválido não entra na lista
+    }
+  }
+
+  add(getServerURL())
+  add('https://rm-embalagens.vercel.app')
+  add('https://rmembalagenseetiquetas.vercel.app')
+  add(process.env.VERCEL_PROJECT_PRODUCTION_URL)
+  add(process.env.VERCEL_URL)
+  if (process.env.NODE_ENV !== 'production') add('http://localhost:3000')
+
+  return [...origins]
+}

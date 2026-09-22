@@ -14,7 +14,7 @@ export const ProductCategories: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'group'],
     group: 'Catálogo',
-    description: 'Os produtos ficam dentro das linhas do catálogo. Clique na foto para editar.',
+    description: 'O produto entra numa categoria que já existe. As fotos ficam neste formulário.',
     components: {
       Description: '/admin/DocGuide',
       beforeListTable: ['/admin/CategoryGallery'],
@@ -59,13 +59,16 @@ export const ProductCategories: CollectionConfig = {
       name: 'group',
       type: 'relationship',
       relationTo: 'product-groups',
-      label: 'Linha do catálogo',
+      label: 'Categoria',
       required: true,
       admin: {
         appearance: 'select',
         allowCreate: false,
         allowEdit: false,
-        description: 'Sacolas, Etiquetas, Tags ou Embalagens.',
+        description: 'Sacolas, Etiquetas, Tags ou Embalagens. O produto só entra numa categoria já criada.',
+        components: {
+          beforeInput: ['/admin/PrefillGroup'],
+        },
       },
     },
     {

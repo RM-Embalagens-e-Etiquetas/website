@@ -4,7 +4,7 @@ import type { MouseEvent, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { useNav } from '@payloadcms/ui'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { Icon } from './Icon'
 
 type Product = {
@@ -39,9 +39,23 @@ function useHash() {
   return hash
 }
 
-function isActive(pathname: string, href: string, match: 'prefix' | 'exact') {
-  if (match === 'exact') return pathname === href
-  return pathname === href || pathname.startsWith(`${href}/`)
+function isActive(
+  pathname: string,
+  href: string,
+  match: 'prefix' | 'exact',
+  search: string,
+) {
+  const [pathAndHash, query] = href.split('?')
+  const path = pathAndHash.split('#')[0]
+  const pathMatches = match === 'exact' ? pathname === path : pathname === path || pathname.startsWith(`${path}/`)
+  if (!pathMatches) return false
+  if (!query) return true
+  const expected = new URLSearchParams(query)
+  const current = new URLSearchParams(search)
+  for (const [key, value] of expected) {
+    if (current.get(key) !== value) return false
+  }
+  return true
 }
 
 function NavLink({
@@ -58,7 +72,8 @@ function NavLink({
   nested?: boolean
 }) {
   const pathname = usePathname() || ''
-  const active = isActive(pathname, href, match)
+  const search = useSearchParams().toString()
+  const active = isActive(pathname, href, match, search)
 
   return (
     <Link
@@ -134,8 +149,15 @@ function LineNav({ group }: { group: Group }) {
               {product.title}
             </NavLink>
           ))}
+          <NavLink
+            href={`/admin/collections/product-categories/create?group=${group.id}`}
+            match="exact"
+            nested
+          >
+            Novo produto
+          </NavLink>
           <NavLink href={lineHref} match="exact" nested>
-            Nome e texto da linha
+            Nome e texto da categoria
           </NavLink>
         </div>
       ) : null}
@@ -176,8 +198,8 @@ export default function SidebarNav({ groups }: { groups: Group[] }) {
       {groups.map((group) => (
         <LineNav key={group.id} group={group} />
       ))}
-      <NavLink href="/admin/collections/product-categories/create" icon="plus" match="exact">
-        Novo produto
+      <NavLink href="/admin/collections/product-groups/create" icon="plus" match="exact">
+        Nova categoria
       </NavLink>
     </nav>
   )

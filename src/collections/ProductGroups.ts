@@ -5,8 +5,8 @@ import { easyAdmin } from '../admin/easy'
 export const ProductGroups: CollectionConfig = {
   slug: 'product-groups',
   labels: {
-    singular: 'Linha',
-    plural: 'Linhas do catálogo',
+    singular: 'Categoria',
+    plural: 'Categorias',
   },
   lockDocuments: false,
   admin: {
@@ -14,7 +14,7 @@ export const ProductGroups: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title'],
     group: 'Catálogo',
-    description: 'Nome e texto desta linha na página Produtos. As fotos ficam em cada produto.',
+    description: 'Nome e texto desta categoria na página Produtos. Os produtos e as fotos ficam dentro dela.',
   },
   access: {
     read: () => true,
@@ -26,7 +26,7 @@ export const ProductGroups: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
-      label: 'Nome da linha',
+      label: 'Nome da categoria',
       required: true,
     },
     {

@@ -24,8 +24,8 @@ export default async function CategoryGallery() {
     <div className="rm-catalog">
       <ScrollToLine />
       <p className="rm-board__hint">
-        No site, cada linha (Sacolas, Etiquetas, Tags e Embalagens) tem os produtos embaixo. Clique na
-        foto para editar. O nome da seção muda em “Nome e texto da linha”.
+        Cada categoria (Sacolas, Etiquetas, Tags e Embalagens) agrupa os produtos. O produto novo entra
+        aqui, dentro da categoria. Clique na foto para editar.
       </p>
       {groups.docs.map((group) => {
         const items = categories.docs.filter((category) => {
@@ -41,7 +41,10 @@ export default async function CategoryGallery() {
                 <h2>{group.title}</h2>
                 <p>{group.description}</p>
               </div>
-              <a href={`/admin/collections/product-groups/${group.id}`}>Nome e texto da linha</a>
+              <div className="rm-board__actions">
+                <a href={`/admin/collections/product-groups/${group.id}`}>Nome e texto da categoria</a>
+                <a href={`/admin/collections/product-categories/create?group=${group.id}`}>Novo produto</a>
+              </div>
             </div>
             <div className="rm-gallery">
               {items.map((category) => {

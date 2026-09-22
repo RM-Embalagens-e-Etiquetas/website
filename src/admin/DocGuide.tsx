@@ -15,18 +15,18 @@ const GUIDES = [
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-groups'),
-    title: 'Linha do catálogo',
-    text: 'Nome e descrição desta linha de produtos. As fotos ficam em cada produto.',
+    title: 'Categoria',
+    text: 'Nome e descrição desta categoria. Os produtos e as fotos ficam em cada item dela.',
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-categories/create'),
     title: 'Novo produto',
-    text: 'Fotos, nome, descrição e linha (Sacolas, Etiquetas, Tags ou Embalagens). A primeira foto vira a capa.',
+    text: 'Fotos, nome e descrição. A categoria já vem preenchida quando você entra por uma categoria existente. A primeira foto vira a capa.',
   },
   {
     test: (pathname: string) => pathname === '/admin/collections/product-categories',
     title: 'Catálogo',
-    text: 'Produtos organizados por linha. Clique para editar fotos, nome e descrição.',
+    text: 'Produtos organizados por categoria. Clique para editar fotos, nome e descrição.',
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-categories/'),
