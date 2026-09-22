@@ -577,40 +577,6 @@ body:has(.rm-board) .rm-howto {
   display: none;
 }
 
-/* Barra de ações do formulário sempre visível ao rolar */
-.template-default .doc-controls,
-.template-default [class*='doc-controls'] {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background: color-mix(in srgb, var(--theme-elevation-0) 94%, transparent);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--theme-elevation-100);
-}
-
-.doc-controls__controls .btn--style-primary,
-form .btn--style-primary[type='submit'],
-button.btn--style-primary[id*='save'] {
-  min-width: 120px;
-  min-height: 40px;
-  font-weight: 800;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-elevation-800) 12%, transparent);
-}
-
-@media (max-width: 768px) {
-  .doc-controls__controls {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .doc-controls__controls .btn--style-primary {
-    width: 100%;
-    max-width: none;
-  }
-}
-
 .upload--has-many__draggable-rows {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
