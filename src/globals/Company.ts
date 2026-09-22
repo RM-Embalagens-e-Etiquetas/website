@@ -6,7 +6,7 @@ const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 export const Company: GlobalConfig = {
   slug: 'company',
   label: 'Dados da empresa',
-  lockDocuments: { duration: 600 },
+  lockDocuments: false,
   admin: {
     ...easyGlobal,
     group: 'Empresa',

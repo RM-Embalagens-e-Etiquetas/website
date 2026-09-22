@@ -60,7 +60,7 @@ export default async function Dashboard() {
           <span>3</span>
           <div>
             <strong>Salve</strong>
-            <em>O botão Salvar fica no canto direito</em>
+            <em>Confirme no botão Salvar do formulário</em>
           </div>
         </li>
       </ol>

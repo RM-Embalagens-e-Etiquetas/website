@@ -16,7 +16,7 @@ const SECTION_OPTIONS = [
 export const HomeConfig: GlobalConfig = {
   slug: 'home-config',
   label: 'Configuração da home',
-  lockDocuments: { duration: 600 },
+  lockDocuments: false,
   admin: {
     ...easyGlobal,
     group: 'Negócio',

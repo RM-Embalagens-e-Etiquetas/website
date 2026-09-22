@@ -8,7 +8,7 @@ export const ProductGroups: CollectionConfig = {
     singular: 'Linha',
     plural: 'Linhas do catálogo',
   },
-  lockDocuments: { duration: 600 },
+  lockDocuments: false,
   admin: {
     ...easyAdmin,
     useAsTitle: 'title',

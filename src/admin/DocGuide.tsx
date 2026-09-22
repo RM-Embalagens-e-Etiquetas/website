@@ -27,7 +27,6 @@ const GUIDES = [
     test: (pathname: string) => pathname === '/admin/collections/product-categories',
     title: 'Catálogo',
     text: 'Produtos organizados por linha. Clique para editar fotos, nome e descrição.',
-    save: false,
   },
   {
     test: (pathname: string) => pathname.startsWith('/admin/collections/product-categories/'),
@@ -45,11 +44,6 @@ export default function DocGuide() {
     <div className="rm-docguide">
       <strong>{guide.title}</strong>
       <p>{guide.text}</p>
-      {guide.save === false ? null : (
-        <p className="rm-docguide__save">
-          Quando terminar, clique em <b>Salvar</b> no canto direito.
-        </p>
-      )}
     </div>
   )
 }
