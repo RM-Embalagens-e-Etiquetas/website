@@ -78,12 +78,16 @@ const plugins =
     ? [
         vercelBlobStorage({
           collections: {
-            media: true,
+            media: {
+              // A URL gravada passa a ser a do Blob. Sem isso o admin recebe
+              // /api/media/file/..., a validação apaga a foto e responde 400.
+              disablePayloadAccessControl: true,
+            },
           },
           token: blobToken,
           access: 'public',
-          // false = seed/API faz upload no servidor pro Blob. true = só browser (admin) — seed não funciona.
-          clientUploads: false,
+          // O navegador envia a foto direto ao Blob. O servidor continua aceitando seed e API.
+          clientUploads: true,
         }),
       ]
     : []
