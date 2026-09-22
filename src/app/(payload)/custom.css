@@ -577,27 +577,38 @@ body:has(.rm-board) .rm-howto {
   display: none;
 }
 
-/* Payload esconde o Salvar do upload em viewports ≤1024px. */
+/* A navegação do upload usa width:100% e empurra o Salvar para fora do drawer. */
 .bulk-upload--actions-bar {
-  height: auto;
-  min-height: var(--doc-controls-height);
-  flex-wrap: wrap;
-  row-gap: 8px;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.bulk-upload--actions-bar__navigation {
+  width: auto !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.bulk-upload--actions-bar__saveButtons,
+.file-selections__header__mobileDocActions {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .bulk-upload--actions-bar__saveButtons {
-  display: flex !important;
-  margin-left: auto;
+  margin-left: auto !important;
 }
 
-.bulk-upload--actions-bar__saveButtons .btn--style-primary,
-.file-selections__header__mobileDocActions .btn--style-primary,
-.drawer .doc-controls__controls .btn--style-primary {
-  min-width: 112px;
-}
-
-.drawer .doc-controls.gutter {
-  top: 0;
+.bulk-upload--actions-bar__saveButtons .btn,
+.file-selections__header__mobileDocActions .btn {
+  min-width: 112px !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 .upload--has-many__draggable-rows {

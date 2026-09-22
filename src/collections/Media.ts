@@ -22,6 +22,14 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (data && !String(data.alt || '').trim()) {
+          data.alt = 'Produto RM Embalagens'
+        }
+        return data
+      },
+    ],
     afterChange: [rejectBrokenProductionUpload],
   },
   fields: [
@@ -29,8 +37,9 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       label: 'Descrição da foto',
-      required: true,
-      defaultValue: 'Produto RM Embalagens',
+      admin: {
+        description: 'Opcional. Se ficar vazio, o site usa um texto padrão.',
+      },
     },
   ],
   upload: {
