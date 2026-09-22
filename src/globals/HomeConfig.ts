@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { easyGlobal } from '../admin/easy'
+import { revalidatePublicSite } from '../lib/revalidate-site'
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 const rowLabel = '/admin/RowLabel'
@@ -27,6 +28,14 @@ export const HomeConfig: GlobalConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, req }) => {
+        if (!req.context?.skipRevalidate) await revalidatePublicSite()
+        return doc
+      },
+    ],
   },
   fields: [
     {

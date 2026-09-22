@@ -4,23 +4,34 @@ import { useCallback, useEffect, useState } from 'react'
 
 const ProductGallery = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(null)
+  const [hidden, setHidden] = useState(() => new Set())
+  const visible = images.filter((image) => !hidden.has(image.src))
+
+  const hide = (src) => {
+    setHidden((current) => {
+      const next = new Set(current)
+      next.add(src)
+      return next
+    })
+    setActiveIndex(null)
+  }
 
   const close = useCallback(() => setActiveIndex(null), [])
 
   const showPrev = useCallback(
     (event) => {
       event?.stopPropagation()
-      setActiveIndex((current) => (current === null ? null : (current - 1 + images.length) % images.length))
+      setActiveIndex((current) => (current === null ? null : (current - 1 + visible.length) % visible.length))
     },
-    [images.length]
+    [visible.length]
   )
 
   const showNext = useCallback(
     (event) => {
       event?.stopPropagation()
-      setActiveIndex((current) => (current === null ? null : (current + 1) % images.length))
+      setActiveIndex((current) => (current === null ? null : (current + 1) % visible.length))
     },
-    [images.length]
+    [visible.length]
   )
 
   useEffect(() => {
@@ -41,22 +52,26 @@ const ProductGallery = ({ images }) => {
     }
   }, [activeIndex, close, showPrev, showNext])
 
+  if (visible.length === 0) {
+    return <p>Novas fotos desta categoria em breve.</p>
+  }
+
   return (
     <>
       <div className="product-gallery">
-        {images.map((image, index) => (
+        {visible.map((image, index) => (
           <button
             key={image.src}
             type="button"
             className="product-gallery__item"
             onClick={() => setActiveIndex(index)}
           >
-            <img src={image.src} alt={image.alt} loading="lazy" />
+            <img src={image.src} alt={image.alt} loading="lazy" onError={() => hide(image.src)} />
           </button>
         ))}
       </div>
 
-      {activeIndex !== null && (
+      {activeIndex !== null && visible[activeIndex] && (
         <div className="lightbox" onClick={close} role="dialog" aria-modal="true">
           <button type="button" className="lightbox__close" onClick={close} aria-label="Fechar">
             <i className="fas fa-times" aria-hidden="true"></i>
@@ -72,8 +87,8 @@ const ProductGallery = ({ images }) => {
           </button>
 
           <img
-            src={images[activeIndex].src}
-            alt={images[activeIndex].alt}
+            src={visible[activeIndex].src}
+            alt={visible[activeIndex].alt}
             className="lightbox__image"
             onClick={(event) => event.stopPropagation()}
           />
@@ -88,7 +103,7 @@ const ProductGallery = ({ images }) => {
           </button>
 
           <span className="lightbox__counter">
-            {activeIndex + 1} / {images.length}
+            {activeIndex + 1} / {visible.length}
           </span>
         </div>
       )}

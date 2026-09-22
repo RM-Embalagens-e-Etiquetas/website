@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { easyAdmin } from '../admin/easy'
+import { revalidatePublicSite } from '../lib/revalidate-site'
 import { setSlugFromTitle } from '../utilities/slug'
 
 export const ProductCategories: CollectionConfig = {
@@ -29,6 +30,12 @@ export const ProductCategories: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [setSlugFromTitle],
+    afterChange: [
+      async ({ doc, req }) => {
+        if (!req.context?.skipRevalidate) await revalidatePublicSite()
+        return doc
+      },
+    ],
   },
   fields: [
     {

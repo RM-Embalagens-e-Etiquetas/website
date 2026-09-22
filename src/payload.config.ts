@@ -78,11 +78,10 @@ const plugins =
     ? [
         vercelBlobStorage({
           collections: {
-            media: {
-              // A URL gravada passa a ser a do Blob. Sem isso o admin recebe
-              // /api/media/file/..., a validação apaga a foto e responde 400.
-              disablePayloadAccessControl: true,
-            },
+            // Não reescrever a URL na leitura. O endereço gerado só pelo nome
+            // do arquivo não bate com as fotos antigas e o site mostra quadrado preto.
+            // O beforeChange da collection grava a URL pública nos uploads novos.
+            media: true,
           },
           token: blobToken,
           access: 'public',
